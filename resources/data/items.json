@@ -1,0 +1,512 @@
+{
+    "mythic": [{
+        "name": "Shurelya's Battlesong"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Sunfire Aegis"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Trinity Force"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Hextech Rocketbelt"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Locket of the Iron Solari"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Imperial Mandate"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Riftmaker"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Night Harvester"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Moonstone Renewer"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Goredrinker"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Stridebreaker"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Divine Sunderer"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Liandry's Anguish"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Luden's Tempest"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Everfrost"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Frostfire Gauntlet"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Turbo Chemtank"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Galeforce"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Kraken Slayer"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Immortal Shieldbow"
+        , "unique": ["Lifeline"]
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Duskblade of Draktharr"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Eclipse"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}, {
+        "name": "Prowler's Claw"
+        , "map": {
+            "sr": true
+            , "aram": true
+        }
+}]
+    , "legendary": [{
+            "name": "Abyssal Mask"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}
+    , {
+            "name": "Manamune"
+            , "unique": ["Mana Charge"]
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}
+    , {
+            "name": "Archangel's Staff"
+            , "unique": ["Mana Charge", "Lifeline"]
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Chemtech Putrifier"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Guardian Angel"
+            , "map": {
+                "sr": true
+                , "aram": false
+            }
+}, {
+            "name": "Mortal Reminder"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Lord Dominik's Regards"
+            , "unique": ["Last Whisper"]
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Phantom Dancer"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Zeke's Convergence"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Sterak's Gage"
+            , "unique": ["Lifeline"]
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Spirit Visage"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Black Cleaver"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Bloodthirster"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Ravenous Hydra"
+            , "unique": ["Hydra"]
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Thornmail"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Warmog's Armor"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Runaan's Hurricane"
+            , "rangedOnly": true
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Wit's End"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Rapid Firecannon"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Stormrazor"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Lich Bane"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Banshee's Veil"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Redemption"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Knight's Vow"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Frozen Heart"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Nashor's Tooth"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Rylai's Crystal Scepter"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Infinity Edge"
+            , "unique": ["Crit Modifier"]
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Guinsoo's Rageblade"
+            , "unique": ["Crit Modifier"]
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Void Staff"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Mercurial Scimitar"
+            , "unique": ["Quicksilver"]
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Youmuu's Ghostblade"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Randuin's Omen"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Blade of The Ruined King"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Maw of Malmortius"
+            , "unique": ["Lifeline"]
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Zhonya's Hourglass"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Morellonomicon"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Umbral Glaive"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Sanguine Blade"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Gargoyle Stoneplate"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Mikael's Blessing"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Ardent Censer"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Essence Reaver"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Dead Man's Plate"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Titanic Hydra"
+            , "unique": ["Hydra"]
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Edge of Night"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Force of Nature"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Horizon Focus"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Cosmic Drive"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Demonic Embrace"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Vigilant Wardstone"
+            , "map": {
+                "sr": true
+                , "aram": false
+            }
+}, {
+            "name": "Silvermere Dawn"
+            , "unique": ["Quicksilver"]
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Death's Dance"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Chempunk Chainsword"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Staff of Flowing Water"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Navori Quickblades"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "The Collector"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Serylda's Grudge"
+            , "unique": ["Last Wisper"]
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}, {
+            "name": "Serpent's Fang"
+            , "map": {
+                "sr": true
+                , "aram": true
+            }
+}]
+}
