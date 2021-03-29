@@ -3,6 +3,7 @@ var timeOut = false;
 //struktur um bauen eine lib mit bildern sounds , server stuff(viewsjs) , bot Js (backup,helpf,music) 
 // events
 // app paths => eigenen dateien https://github.com/ZerioDev/Music-bot/blob/master/index.js
+
 function init() {
     if (localStorage.getItem("MODE") === "light") {
         setLight();
