@@ -23,7 +23,7 @@ module.exports = async(client, guild) => {
             const Discord = require('discord.js');
             const attachment = new Discord.MessageAttachment('./resources/icons/botbasicicon.png', 'botbasicicon.png');
             msgEmbed.files = [attachment];
-            if (!userWhoAddedMe) return console.log("NO USER ID";
+            if (!userWhoAddedMe) return console.log("NO USER who added");
             if (userWhoAddedMe.id !== guild.owner.user.id) {
                 msgEmbed.description = `Thank you for adding **böt** to \`${guild.name}\`. The owner was messaged, too.`;
                 userWhoAddedMe.send({
