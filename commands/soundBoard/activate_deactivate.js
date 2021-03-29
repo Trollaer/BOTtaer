@@ -26,7 +26,7 @@ module.exports = {
         await dbClient.query("UPDATE guildConfigs SET soundboard = $1 WHERE guildID = $2", [newState, guild.id], async function (dbError, dbResponse) {
             if (dbError) {
                 console.log(dbError);
-                returnMsg = "There was an ERROR (de)aktivating the soundboard for this server!"
+                returnMsg = "There was an ERROR (de)activating the soundboard for this server!"
             }
             else {
                 message.client.guildConfigs.get(guild.id).soundboard = newState;

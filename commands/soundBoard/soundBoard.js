@@ -17,7 +17,7 @@ module.exports = {
         };
         if (confG) {
             if (!confG.soundboard) {
-                embed.title = "The soundboard for this server is deaktivated!";
+                embed.title = "The soundboard for this server is deactivated!";
                 embed.url = null;
             }
         }

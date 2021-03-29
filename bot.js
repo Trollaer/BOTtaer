@@ -104,9 +104,9 @@ app.get("/soundboard/:guildID", function (req, res) { // error Msg und nur einma
         return;
     }
     if (!confG.soundboard) {
-        console.log("DEAKTIVATED")
+        console.log("DEactivated")
         res.render("soundboard", {
-            error: "The soundboard for this guild was DEAKTIVATED."
+            error: "The soundboard for this guild was DEactivated."
             , guild: guildD
         })
         return;

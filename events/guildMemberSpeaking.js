@@ -1,6 +1,6 @@
 module.exports = (client, member, speaking) => {
     //console.log(member.user.username.toString() + "  eventtriggered " + speaking);
-    const helpF = require("../../botJS/lib/helpFunctions");
+    const helpF = require("../botJS/lib/helpFunctions");
     var monitoredGuild = client.guildConfigs.get(member.guild.id);
     if (!monitoredGuild) {
         return;
