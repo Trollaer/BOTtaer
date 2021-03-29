@@ -120,6 +120,7 @@ app.get("/soundboard/:guildID", function (req, res) { // error Msg und nur einma
 });
 app.get("/soundboard/getSounds", function (req, res) {
     var folderList = [];
+    console.log("TEST LOG");
     fs.readdirSync('./resources/soundEffects').forEach(folder => {
         var fileList = [];
         fs.readdirSync(`./resources/soundEffects/${folder}`).forEach(file => {
