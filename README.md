@@ -30,15 +30,16 @@ Get böt for your server, [here](https://discord.com/api/oauth2/authorize?client
 Join [this server](https://discord.gg/M986FMJ2G3) and help make böt bug free and better!
 
 ### About this project
-This project was started out of boredom and because there were some features I couldn't find a bot for. Like team creation for some games based on who is in the voicechannel.
-What started out as a fun project, soon got a bit out of hand and I added the functionalities like music or backups and others. Some maybe need some more time to perfect. The code overall went through some changes and I know it's not perfectly readable but I'm on it.
+My friends and I use Discord as our main way of communication. We used some different Bots for some features like music. But there where some features we thought were missing and we couldn't find a Bot for it like team creation for some games based on who is in the voicechannel.
+So ... as a IT-student with some free times in my holidays I started this project. 
+What started out as a fun project, soon got a bit out of hand and I added the some functionalities like music or backups and others. Some maybe need some more time to perfect but they should be bug free. We tested everything on our Server. The code overall went through some changes and I know it's not perfectly readable (sometimes) but I'm on it.
 I'm open for suggestions and tipps. Just join [this server](https://discord.gg/M986FMJ2G3) and help make this bot better!
 
 #### Status
 The new semester just started and development may be slowed down.
 But some features in the making:
 - A web interface
-Open for Ideas.
+- Open for Ideas.
 
 ##### Credits
 Me the main programmer Discord-User **'Trollaer#1712'**.
