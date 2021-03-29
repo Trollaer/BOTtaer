@@ -8,6 +8,7 @@ module.exports = {
     , guildOnly: true
     , execute(message, arguments) {
         const helpF = require("../../botJS/lib/helpFunctions");
+        //schaun ob sb aktiv
         var embed = {
             color: "#82fa9e"
             , title: "You can find the soundboard here."

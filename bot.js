@@ -55,11 +55,13 @@ async function initGuildConfigs() {
             else {
                 dbResponse.rows.forEach(r => {
                         client.guildConfigs.set(r.guildid, {
-                            prefix: r.prefix
+                            guildID: r.guildid
+                            , prefix: r.prefix
                             , DJrole: r.djrole
                             , busy: false
                             , monitoringAll: null
                             , monitoringUsers: new Discord.Collection()
+                            , soundboard: r.soundboard
                         })
                     })
                     //console.log(client.guildConfigs)
@@ -86,12 +88,27 @@ app.get("/", function (req, res) {
     //console.log(clientS);
     res.send(client);
 });
-app.get("/soundboard/:guildID", function (req, res) {
+app.get("/soundboard/:guildID", function (req, res) { // error Msg und nur einmal render
     var guildD = client.guilds.cache.get(req.params.guildID);
     if (!guildD) {
         res.render("soundboard", {
             error: "KEINE GUILD"
         })
+        return;
+    }
+    var confG=client.guildConfigs.get(req.params.guildID);
+    if(!confG){
+        res.render("soundboard", {
+            error: "Keine Configs"
+        })
+        return;
+    }
+    if(!client.guildConfigs.get(req.params.guildID).soundboard){
+        console.log("DEAKTIVATED")
+        res.render("soundboard", {
+            error: "DEAKTIVATED"
+        })
+        return;
     }
     res.render("soundboard", {
         guild: {
@@ -100,7 +117,7 @@ app.get("/soundboard/:guildID", function (req, res) {
         }
     })
 });
-app.get("/getSounds", function (req, res) {
+app.get("/soundboard/getSounds", function (req, res) {
     var folderList = [];
     fs.readdirSync('./resources/soundEffects').forEach(folder => {
         var fileList = [];
@@ -114,7 +131,7 @@ app.get("/getSounds", function (req, res) {
     })
     res.send(folderList);
 });
-app.get("/requestPlay/:guildID/:folder/:file", function (req, res) {
+app.get("/soundboard/requestPlay/:guildID/:folder/:file", function (req, res) {
     var guildID = req.params.guildID;
     var folderName = req.params.folder;
     var fileName = req.params.file;

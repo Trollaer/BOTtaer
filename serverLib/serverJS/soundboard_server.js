@@ -37,7 +37,7 @@ function setLight() {
 }
 async function loadSounds() {
     $.ajax({
-        url: "/getSounds"
+        url: "/soundboard/getSounds"
         , dataType: "json"
         , success: setSounds
         , error: errorLoading
@@ -83,7 +83,7 @@ function playSound(button) {
     console.log(guildID + "hallo")
     console.log("playing " + button.dataset.value)
     $.ajax({
-        url: "/requestPlay/" + guildID + "/" + button.dataset.value
+        url: "/soundboard/requestPlay/" + guildID + "/" + button.dataset.value
         , dataType: "json"
         , success: function (data) {
             timeOut = false;
