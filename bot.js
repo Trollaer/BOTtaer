@@ -140,43 +140,54 @@ app.get("/soundboardAPI/requestPlay/:guildID/:folder/:file", function (req, res)
     var fileName = req.params.file;
     var guild = client.guilds.cache.get(guildID)
     var errorMSG = "";
-    if (!fileName || fileName === "") {
-        errorMSG += "Requires file!\n"
-    }
-    if (!folderName || folderName === "") {
-        errorMSG += "Requires folder!\n"
-    }
-    if (!guild) {
-        errorMSG += "No guild found!\n";
+    var confG = client.guildConfigs.get(req.params.guildID);
+    if (!confG) {
+        errorMSG += "Guildconfig Error.\n"
     }
     else {
-        if (!guild.me.voice.channelID) {
-            errorMSG += "Not in a channel!\n"
+        if (!confG.soundboard) {
+            errorMSG += "**Soundboard is deactivated for this server.**"
         }
-        if (!guild.me.voice.connection) {
-            errorMSG += "No connection to channel!\n"
+        else {
+            if (!fileName || fileName === "") {
+                errorMSG += "Requires file!\n"
+            }
+            if (!folderName || folderName === "") {
+                errorMSG += "Requires folder!\n"
+            }
+            if (!guild) {
+                errorMSG += "No guild found!\n";
+            }
+            else {
+                if (!guild.me.voice.channelID) {
+                    errorMSG += "Not in a channel!\n"
+                }
+                if (!guild.me.voice.connection) {
+                    errorMSG += "No connection to channel!\n"
+                }
+            }
         }
-    }
-    var musicQ = client.musicQueue.get(guildID);
-    if (musicQ) {
-        errorMSG += "Currently playing music!\n";
-    }
-    if (errorMSG) {
-        res.send({
-            error: errorMSG
-        })
-    }
-    else {
-        var connection = guild.me.voice.connection
-        try {
-            const dispatcher = connection.play("./resources/soundEffects/" + folderName + "/" + fileName)
+        var musicQ = client.musicQueue.get(guildID);
+        if (musicQ) {
+            errorMSG += "Currently playing music!\n";
         }
-        catch (err) {
-            console.log(err)
+        if (errorMSG) {
+            res.send({
+                error: errorMSG
+            })
         }
-        res.send({
-            message: "Playing"
-        });
+        else {
+            var connection = guild.me.voice.connection
+            try {
+                const dispatcher = connection.play("./resources/soundEffects/" + folderName + "/" + fileName)
+            }
+            catch (err) {
+                console.log(err)
+            }
+            res.send({
+                message: "Playing"
+            });
+        }
     }
 });
 app.get("/ping", function (req, res) {
