@@ -39,5 +39,5 @@ module.exports = async(client, guild) => {
         //ja -> dann wegen (password für web interface)
         //nein -> sagen, dass (configs for web interface an owner) 
         //selbe für djrole / prefix / soundboard
-    });
+    );
 }
