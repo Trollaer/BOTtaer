@@ -15,8 +15,8 @@ module.exports = {
             , url: "https://bottaer.herokuapp.com/soundboard/" + message.guild.id
         };
         helpF.sendMsgWithDeleteAfter(message.channel, "SB", 30000, {
-                complete: embed
-            });
+            complete: embed
+        });
         if (message.deletable) {
             message.delete().catch(console.error);
         }

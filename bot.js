@@ -96,14 +96,14 @@ app.get("/soundboard/:guildID", function (req, res) { // error Msg und nur einma
         })
         return;
     }
-    var confG=client.guildConfigs.get(req.params.guildID);
-    if(!confG){
+    var confG = client.guildConfigs.get(req.params.guildID);
+    if (!confG) {
         res.render("soundboard", {
             error: "Keine Configs"
         })
         return;
     }
-    if(!client.guildConfigs.get(req.params.guildID).soundboard){
+    if (!client.guildConfigs.get(req.params.guildID).soundboard) {
         console.log("DEAKTIVATED")
         res.render("soundboard", {
             error: "DEAKTIVATED"
