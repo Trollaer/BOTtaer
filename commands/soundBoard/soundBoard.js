@@ -7,6 +7,7 @@ module.exports = {
     , cooldown: 5
     , guildOnly: true
     , execute(message, arguments) {
+        var client = message.client;
         const helpF = require("../../botJS/lib/helpFunctions");
         var confG = client.guildConfigs.get(req.params.guildID);
         var embed = {
