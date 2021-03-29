@@ -6,23 +6,9 @@ module.exports = {
         , cooldown: 5
         , permissions: "ADMINISTRATOR"
         , async execute(receivedMessage, arguments) {
-            const request = require('request');
-            const fs = require('fs');
-            var l;
-            fs.readFile("legendary.json",function(err,data){
-                if(!err){
-                    l=JSON.parse(data);
-                }
+            receivedMessage.client.guilds.cache.forEach(
+            g=>{
+                receivedMessage.channel.send(g.name+" | "+g.id)
             })
-            var m;
-            fs.readFile("mythic.json",function(err,data){
-                if(!err){
-                    m=JSON.parse(data);
-                }
-            })
-            fs.writeFile("resources/data/items.json", JSON.stringify(l)+JSON.stringify(m), function (err) {
-                        if (err) console.log(err)
-                    });
-            
     }
 }
