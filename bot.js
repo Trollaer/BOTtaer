@@ -118,7 +118,7 @@ app.get("/soundboard/:guildID", function (req, res) { // error Msg und nur einma
         }
     })
 });
-app.get("/soundboard/getSounds", function (req, res) {
+app.get("/soundboardAPI/getSounds", function (req, res) {
     var folderList = [];
     console.log("TEST LOG");
     fs.readdirSync('./resources/soundEffects').forEach(folder => {
@@ -134,7 +134,7 @@ app.get("/soundboard/getSounds", function (req, res) {
     console.log(folderList);
     res.send(folderList);
 });
-app.get("/soundboard/requestPlay/:guildID/:folder/:file", function (req, res) {
+app.get("/soundboardAPI/requestPlay/:guildID/:folder/:file", function (req, res) {
     var guildID = req.params.guildID;
     var folderName = req.params.folder;
     var fileName = req.params.file;
