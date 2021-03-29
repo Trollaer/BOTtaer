@@ -9,7 +9,7 @@ module.exports = {
     , execute(message, arguments) {
         var client = message.client;
         const helpF = require("../../botJS/lib/helpFunctions");
-        var confG = client.guildConfigs.get(req.params.guildID);
+        var confG = client.guildConfigs.get(message.guild.id);
         var embed = {
             color: "#82fa9e"
             , title: "You can find the soundboard here."
