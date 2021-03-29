@@ -8,7 +8,7 @@ module.exports = {
     , cooldown: 30
     , permissions: "ADMINISTRATOR"
     , guildOnly: true
-    , execute(message, arguments) {
+    , async execute(message, arguments) {
         const helpF = require("../../botJS/lib/helpFunctions");
         var dbClient = message.client.dbClient;
         const Discord = require('discord.js');
