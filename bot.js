@@ -130,6 +130,7 @@ app.get("/soundboard/getSounds", function (req, res) {
             , files: fileList
         });
     })
+    console.log(folderList);
     res.send(folderList);
 });
 app.get("/soundboard/requestPlay/:guildID/:folder/:file", function (req, res) {

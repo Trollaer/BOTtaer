@@ -7,6 +7,8 @@ block scripts
     script(type="text/javascript" src="/serverJS/soundboard_server.js")
 
 block content
+    if error 
+        h3(class="text-center" ) #{error}
     if guild
         h1 Soundboard for #[span(class="text-info h1") #{guild.name}] 
         p(class="text-secondary") ID: #[span(class="text-secondary" id="idfield") #{guild.id}]
@@ -14,5 +16,4 @@ block content
         div(class="d-flex justify-content-center align-items-center border border-info mt-5")
             div(class="text-center" ) Can't find the sound you want or have some suggestions? 
             a(class="text-info ml-3" href="https://discord.gg/M986FMJ2G3" target="_blank")  Join the Discord
-    if error 
-        h3 #{error}
+    
