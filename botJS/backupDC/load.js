@@ -177,13 +177,16 @@ async function loadChannel(channelData, guild, category) {
         await channelData.permissions.forEach(async function (perm) {
             //console.log(perm);
             var role = await guild.roles.cache.find(r => r.name === perm.roleName);
-            console.log(role.name + " +|+ " + perm.roleName + " | " + role.id + " # " + channelData.name);
+            //console.log(role.name + " +|+ " + perm.roleName + " | " + role.id + " # " + channelData.name);
             if (role) {
                 finalPermissions.push({
                     id: role
                     , allow: perm.allow
                     , deny: perm.deny
                 });
+            }
+            else {
+                console.log(perm.roleName)
             }
         });
         await channel.overwritePermissions(finalPermissions);
