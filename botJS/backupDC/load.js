@@ -43,11 +43,15 @@ async function loadRoles(guild, backupData) {
         //console.log("END off backup")
 }
 //*********loadBackup**************
-async function loadBackup(guild, backupData) {
+async function loadBackup(guild, backupData, client) {
     //console.log(backupData);
+    var guildID = guild.id;
     await configLoad(guild, backupData);
     await rolesLoad(guild, backupData);
     setTimeout(async function () {
+        console.log(guild)
+        guild = await client.guilds.cache.get(guildID);
+        console.log(guild)
         await channelsLoad(guild, backupData);
         await afkLoad(guild, backupData);
         await emojisLoad(guild, backupData);
@@ -177,7 +181,7 @@ async function loadChannel(channelData, guild, category) {
     finalPermissions = [];
     await channelData.permissions.forEach(async function (perm) {
         console.log(perm);
-        var role = guild.roles.cache.find(async function (r) {
+        var role = await guild.roles.cache.find(async function (r) {
             return r.name === perm.roleName;
         });
         console.log(role.name + " | " + role.id + " # " + channelData.name);

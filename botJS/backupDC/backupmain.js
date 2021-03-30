@@ -39,7 +39,8 @@ exports.loadRoles = loadRoles;
 exports.reset = reset;
 exports.list = list;
 // load und load role eigenen commands 
-async function loadServer(guild, author, backupID, dbClient, resetBol) {
+async function loadServer(guild, author, backupID, client, resetBol) {
+    const dbClient = client.dbClient;
     dbClient.query("SELECT * FROM backups WHERE backupID = $1", [backupID], async function (dbError, dbResponse) {
         if (dbError) {
             author.send("Something went wrong while getting the backup data for `" + backupID + "`");
@@ -57,7 +58,7 @@ async function loadServer(guild, author, backupID, dbClient, resetBol) {
                 await reset(guild, author, true);
             }
             //console.log(dbResponse.rows[0].data);
-            await loadMaster.loadBackup(guild, dbResponse.rows[0].data.data);
+            await loadMaster.loadBackup(guild, dbResponse.rows[0].data.data, client);
         }
     });
 }

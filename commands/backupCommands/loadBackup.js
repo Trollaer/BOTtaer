@@ -60,7 +60,7 @@ async function loadFn(receivedMessage, args) { //
             // if the author of the commands does not confirm the backup loading
             return receivedMessage.channel.send(":x: | Time's up! Cancelled backup loading!");
         });
-        backup.loadServer(receivedMessage.guild, receivedMessage.author, args[0], dbClient, false);
+        backup.loadServer(receivedMessage.guild, receivedMessage.author, args[0], receivedMessage.client, false);
     }
     else if (!args[1]) {
         receivedMessage.channel.send(":exclamation: Make sure that BOTtaer is the role at the top of the list. Otherwise it may not delete all roles.\n:warning: | The server will be reseted first. All channels/roles etc. get deleted and then recreated form the backup!\n Type `-confirm` to confirm!");
