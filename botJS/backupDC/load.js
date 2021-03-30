@@ -177,7 +177,7 @@ async function loadChannel(channelData, guild, category) {
         var role = guild.roles.cache.find(async function (r) {
             return r.name === perm.roleName;
         });
-        console.log(role.name + " | " + role.id  );
+        console.log(role.name + " | " + role.id + " # "+channelData.name);
         if (role) {
             finalPermissions.push({
                 id: role
@@ -186,7 +186,7 @@ async function loadChannel(channelData, guild, category) {
             });
         }
     });
-    createOPtions.permissionsOverwrites = finalPermissions;
+    createOptions.permissionsOverwrites = finalPermissions;
     await guild.channels.create(channelData.name, createOptions).then(async function (channel) {
         /* Load messages */
         if (channelData.type === 'text' && channelData.messages.length > 0) {
