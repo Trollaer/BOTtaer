@@ -72,7 +72,7 @@ async function loadFn(receivedMessage, args) { //
             // if the author of the commands does not confirm the backup loading
             return receivedMessage.channel.send(":x: | Time's up! Cancelled backup loading!");
         });
-        backup.loadServer(receivedMessage.guild, receivedMessage.author, args[0], dbClient, true);
+        backup.loadServer(receivedMessage.guild, receivedMessage.author, args[0], receivedMessage.client, true);
     }
     else {
         receivedMessage.channel.send("Classic misstake you maybe copied the *space* when copying the backupID.\nOr type '$help loadbackup' for more infomation.")
