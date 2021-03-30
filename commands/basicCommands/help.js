@@ -41,7 +41,7 @@ module.exports = {
         const exampleEmbed = {
             color: 0xFFB224
             , title: titleText
-            , description: data+"\n____________________________"
+            , description: data + "\n____________________________"
             , thumbnail: {
                 url: "attachment://bothelpicon.png"
             }
@@ -52,12 +52,15 @@ module.exports = {
                 , }]
         };
         if (message.channel.guild) {
-            var prefix = message.client.guildConfigs.get(message.guild.id).prefix;
-            if (prefix !== "$") {
-                exampleEmbed.fields = [{
-                    name: "⚠️ **The prefix for this server is:   ` " + prefix + " `**⚠️"
-                    , value: "(only '$help' works with '$')"
-                }]
+            var gConf = message.client.guildConfigs.get(message.guild.id);
+            if (gConf) {
+                var prefix = gConf.prefix;
+                if (prefix !== "$") {
+                    exampleEmbed.fields.push({
+                        name: "⚠️ **The prefix for this server is:   ` " + prefix + " `**⚠️"
+                        , value: "(only '$help' works with '$')"
+                    })
+                }
             }
         }
         const Discord = require('discord.js');

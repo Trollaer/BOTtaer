@@ -8,9 +8,9 @@ module.exports = {
     , cooldown: 20
     , execute(receivedMessage, arguments) {
         var guild = receivedMessage.guild
-        var conf =receivedMessage.client.guildConfigs.get(guild.id)
-        if(!conf)return receivedMessage.reply("Error conf")
-        var returnMsg = "\n**Prefix:** '"+conf.prefix+"'";
+        var conf = receivedMessage.client.guildConfigs.get(guild.id)
+        if (!conf) return receivedMessage.reply("Error conf")
+        var returnMsg = "\n**Prefix:** '" + conf.prefix + "'";
         returnMsg += "\n**Owner: ** " + guild.owner.user.username;
         var cDate = Date(guild.createdTimestamp + 3600).toString()
         cDate = cDate.split(" GMT");
@@ -38,11 +38,11 @@ module.exports = {
             returnMsg += "\n**AFK channel: ** " + guild.afkChannel.name;
         }
         returnMsg += "\n**Roles count: ** " + guild.roles.cache.array().length;
-        
-        if(conf.DJrole){
+        if (conf.DJrole) {
             var dj = guild.roles.cache.get(conf.DJrole)
-            if(dj)returnMsg+="\n**DJ-role: ** <@&"+conf.DJrole+">";
+            if (dj) returnMsg += "\n**DJ-role: ** <@&" + conf.DJrole + ">";
         }
+        returnMsg += "\n**Soundboard: **" + (gConf.soundboard ? "**activated**" : "**deactivated**")
         const exampleEmbed = {
             title: "__**Infos about '" + guild.name + "':**__"
             , color: 0x06C436
