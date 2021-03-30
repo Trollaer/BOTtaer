@@ -177,7 +177,7 @@ async function loadChannel(channelData, guild, category) {
         var role = guild.roles.cache.find(async function (r) {
             return r.name === perm.roleName;
         });
-        console.log(role.name + " | " + role.id + );
+        console.log(role.name + " | " + role.id  );
         if (role) {
             finalPermissions.push({
                 id: role
