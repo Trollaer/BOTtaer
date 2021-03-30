@@ -47,7 +47,7 @@ async function loadBackup(guild, backupData) {
     //console.log(backupData);
     await configLoad(guild, backupData);
     await rolesLoad(guild, backupData);
-    setTimeout(async function (guild, backupData) {
+    setTimeout(async function () {
         await channelsLoad(guild, backupData);
         await afkLoad(guild, backupData);
         await emojisLoad(guild, backupData);
