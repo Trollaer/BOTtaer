@@ -43,22 +43,16 @@ async function loadRoles(guild, backupData) {
         //console.log("END off backup")
 }
 //*********loadBackup**************
-async function loadBackup(guild, backupData, client) {
+async function loadBackup(guild, backupData) {
     //console.log(backupData);
-    var guildID = guild.id;
     await configLoad(guild, backupData);
     await rolesLoad(guild, backupData);
-    setTimeout(async function () {
-        console.log(guild)
-        guild = await client.guilds.cache.get(guildID);
-        console.log(guild)
-        await channelsLoad(guild, backupData);
-        await afkLoad(guild, backupData);
-        await emojisLoad(guild, backupData);
-        await emojisLoad(guild, backupData);
-        await bansLoad(guild, backupData);
-        await embedChannelLoad(guild, backupData);
-    }, 10000)
+    await channelsLoad(guild, backupData);
+    await afkLoad(guild, backupData);
+    await emojisLoad(guild, backupData);
+    await emojisLoad(guild, backupData);
+    await bansLoad(guild, backupData);
+    await embedChannelLoad(guild, backupData);
 }
 //####### config ######
 async function configLoad(guild, backupData) {
@@ -177,22 +171,22 @@ async function loadChannel(channelData, guild, category) {
         createOptions.userLimit = channelData.userLimit;
         createOptions.type = 'voice';
     }
-    var finalPermissions;
-    finalPermissions = [];
-    await channelData.permissions.forEach(async function (perm) {
-        //console.log(perm);
-        var role = await guild.roles.cache.find(r => r.name === perm.roleName);
-        console.log(role.name + " +|+ " + perm.roleName + " | " + role.id + " # " + channelData.name);
-        if (role) {
-            finalPermissions.push({
-                id: role
-                , allow: perm.allow
-                , deny: perm.deny
-            });
-        }
-    });
-    createOptions.permissionsOverwrites = finalPermissions;
     await guild.channels.create(channelData.name, createOptions).then(async function (channel) {
+        var finalPermissions;
+        finalPermissions = [];
+        await channelData.permissions.forEach(async function (perm) {
+            //console.log(perm);
+            var role = await guild.roles.cache.find(r => r.name === perm.roleName);
+            console.log(role.name + " +|+ " + perm.roleName + " | " + role.id + " # " + channelData.name);
+            if (role) {
+                finalPermissions.push({
+                    id: role
+                    , allow: perm.allow
+                    , deny: perm.deny
+                });
+            }
+        });
+        await channel.overwritePermissions(finalPermissions);
         /* Load messages */
         if (channelData.type === 'text' && channelData.messages.length > 0) {
             await channel.createWebhook('MessagesBackup', {
