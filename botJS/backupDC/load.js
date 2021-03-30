@@ -47,12 +47,14 @@ async function loadBackup(guild, backupData) {
     //console.log(backupData);
     await configLoad(guild, backupData);
     await rolesLoad(guild, backupData);
-    await channelsLoad(guild, backupData);
-    await afkLoad(guild, backupData);
-    await emojisLoad(guild, backupData);
-    await emojisLoad(guild, backupData);
-    await bansLoad(guild, backupData);
-    await embedChannelLoad(guild, backupData);
+    setTimeout(async function () {
+        await channelsLoad(guild, backupData);
+        await afkLoad(guild, backupData);
+        await emojisLoad(guild, backupData);
+        await emojisLoad(guild, backupData);
+        await bansLoad(guild, backupData);
+        await embedChannelLoad(guild, backupData);
+    }, 5000)
 }
 //####### config ######
 async function configLoad(guild, backupData) {
