@@ -47,12 +47,14 @@ async function loadBackup(guild, backupData) {
     //console.log(backupData);
     await configLoad(guild, backupData);
     await rolesLoad(guild, backupData);
-    await channelsLoad(guild, backupData);
-    await afkLoad(guild, backupData);
-    await emojisLoad(guild, backupData);
-    await emojisLoad(guild, backupData);
-    await bansLoad(guild, backupData);
-    await embedChannelLoad(guild, backupData);
+    setTimeout(function (guild, backupData) {
+        await channelsLoad(guild, backupData);
+        await afkLoad(guild, backupData);
+        await emojisLoad(guild, backupData);
+        await emojisLoad(guild, backupData);
+        await bansLoad(guild, backupData);
+        await embedChannelLoad(guild, backupData);
+    }, 10000)
 }
 //####### config ######
 async function configLoad(guild, backupData) {
@@ -178,7 +180,7 @@ async function loadChannel(channelData, guild, category) {
         var role = guild.roles.cache.find(async function (r) {
             return r.name === perm.roleName;
         });
-        console.log(role.name + " | " + role.id + " # "+channelData.name);
+        console.log(role.name + " | " + role.id + " # " + channelData.name);
         if (role) {
             finalPermissions.push({
                 id: role
