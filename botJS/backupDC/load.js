@@ -171,22 +171,23 @@ async function loadChannel(channelData, guild, category) {
         createOptions.userLimit = channelData.userLimit;
         createOptions.type = 'voice';
     }
-    await guild.channels.create(channelData.name, createOptions).then(async function (channel) {
-        var finalPermissions;
-        finalPermissions = [];
-        await channelData.permissions.forEach(async function (perm) {
-            var role = guild.roles.cache.find(async function (r) {
-                return r.name === perm.roleName;
-            });
-            if (role) {
-                finalPermissions.push({
-                    id: role.id
-                    , allow: perm.allow
-                    , deny: perm.deny
-                });
-            }
+    var finalPermissions;
+    finalPermissions = [];
+    await channelData.permissions.forEach(async function (perm) {
+        var role = guild.roles.cache.find(async function (r) {
+            return r.name === perm.roleName;
         });
-        await channel.overwritePermissions(finalPermissions);
+        console.log(role.name + " | " + role.id + );
+        if (role) {
+            finalPermissions.push({
+                id: role
+                , allow: perm.allow
+                , deny: perm.deny
+            });
+        }
+    });
+    createOPtions.permissionsOverwrites = finalPermissions;
+    await guild.channels.create(channelData.name, createOptions).then(async function (channel) {
         /* Load messages */
         if (channelData.type === 'text' && channelData.messages.length > 0) {
             await channel.createWebhook('MessagesBackup', {
