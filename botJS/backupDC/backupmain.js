@@ -53,7 +53,12 @@ async function loadServer(guild, author, backupID, client, resetBol) {
         else {
             var cDate = "" + dbResponse.rows[0].creationdate;
             cDate = cDate.split(" GMT");
-            author.send("The backup with the backupID: `" + backupID + "` is getting loaded.\nIt was created on " + cDate[0] + ".\n If you see channels, that shouln't be there (you can't join or write in them), these are just visual bugs from Discord. To fix them, just quit Discord. Not just close it but quit.");
+            author.send({
+                embed: {
+                    title: "The backup with the backupID: `" + backupID + "` is getting loaded."
+                    , description: "It was created on " + cDate[0] + ".\n If you see channels, that shouln't be there (you can't join or write in them), these are just visual bugs from Discord. To fix them, just quit Discord. Not just close it but quit."
+                }
+            });
             if (resetBol) {
                 await reset(guild, author, true);
             }
@@ -75,7 +80,12 @@ async function loadRoles(guild, author, backupID, dbClient) {
         else {
             var cDate = "" + dbResponse.rows[0].creationdate;
             cDate = cDate.split(" GMT");
-            author.send("The roles from the backup with the backupID: `" + backupID + "` are getting loaded.\nIt was created on " + cDate[0] + ".");
+            author.send({
+                embed: {
+                    title: "The roles from the backup with the backupID: `" + backupID + "` are getting loaded."
+                    , description: "It was created on " + cDate[0] + "."
+                }
+            });
             //log Data
             await loadMaster.loadRoles(guild, dbResponse.rows[0].data);
         }

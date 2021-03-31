@@ -42,7 +42,7 @@ module.exports = {
             var dj = guild.roles.cache.get(conf.DJrole)
             if (dj) returnMsg += "\n**DJ-role: ** <@&" + conf.DJrole + ">";
         }
-        returnMsg += "\n**Soundboard: " + (conf.soundboard ? "activated" : "deactivated") + "**"
+        returnMsg += "\n**Soundboard: **" + (conf.soundboard ? "activated" : "deactivated")
         const exampleEmbed = {
             title: "__**Infos about '" + guild.name + "':**__"
             , color: 0x06C436
