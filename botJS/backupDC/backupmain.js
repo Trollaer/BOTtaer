@@ -24,7 +24,7 @@ async function create(guild, author, dbClient) {
         }
     });
     var embed = {
-        color: "#82fa9e"
+        color: "#09fc81"
         , description: "Backup and Rolebackup for '" + gN + "' successful with backupID: `" + backupID + "`"
     };
     author.send({
@@ -55,7 +55,8 @@ async function loadServer(guild, author, backupID, client, resetBol) {
             cDate = cDate.split(" GMT");
             author.send({
                 embed: {
-                    title: "The backup with the backupID: `" + backupID + "` is getting loaded."
+                    color: "#09fc81"
+                    , title: "The backup with the backupID: `" + backupID + "` is getting loaded."
                     , description: "It was created on " + cDate[0] + ".\n If you see channels, that shouln't be there (you can't join or write in them), these are just visual bugs from Discord. To fix them, just quit Discord. Not just close it but quit."
                 }
             });
@@ -82,7 +83,8 @@ async function loadRoles(guild, author, backupID, dbClient) {
             cDate = cDate.split(" GMT");
             author.send({
                 embed: {
-                    title: "The roles from the backup with the backupID: `" + backupID + "` are getting loaded."
+                    color: "#09fc81"
+                    , title: "The roles from the backup with the backupID: `" + backupID + "` are getting loaded."
                     , description: "It was created on " + cDate[0] + "."
                 }
             });
