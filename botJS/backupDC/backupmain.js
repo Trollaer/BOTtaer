@@ -57,7 +57,9 @@ async function loadServer(guild, author, backupID, client, resetBol) {
                 embed: {
                     color: "#09fc81"
                     , title: "The backup with the backupID: `" + backupID + "` is getting loaded."
-                    , description: "It was created on " + cDate[0] + ".\n If you see channels, that shouln't be there (you can't join or write in them), these are just visual bugs from Discord. To fix them, just quit Discord. Not just close it but quit."
+                    , description: "It was created on " + cDate[0] + ".\n If you see channels, that shouln't be there (you can't join or write in them), these are just visual bugs from Discord. To fix them, just quit Discord. Not just close it but quit.", footer:{
+                        text:"It takes at least 30 seconds to load."
+                    }
                 }
             });
             if (resetBol) {
@@ -86,6 +88,7 @@ async function loadRoles(guild, author, backupID, dbClient) {
                     color: "#09fc81"
                     , title: "The roles from the backup with the backupID: `" + backupID + "` are getting loaded."
                     , description: "It was created on " + cDate[0] + "."
+                    
                 }
             });
             //log Data

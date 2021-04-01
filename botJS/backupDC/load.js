@@ -54,7 +54,7 @@ async function loadBackup(guild, backupData) {
         await emojisLoad(guild, backupData);
         await bansLoad(guild, backupData);
         await embedChannelLoad(guild, backupData);
-    }, 5000)
+    }, 20000)
 }
 //####### config ######
 async function configLoad(guild, backupData) {

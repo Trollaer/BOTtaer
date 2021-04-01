@@ -25,19 +25,19 @@ module.exports = {
             })
             //console.log(wantToJoinChannel.name + "***********")
         if (!wantToJoinChannel) {
-            receivedMessage.channel.send("Make sure you spelled the channel name right.");
+            receivedMessage.reply("Make sure you spelled the channel name right.");
             return;
         }
         if (!wantToJoinChannel.type === "voice") {
-            receivedMessage.channel.send("Only works for voice channels.");
-            return;
-        }
-        if (wantToJoinChannel.members.size === 0) { /////// hier fkt was nicht
-            receivedMessage.channel.send("Channel is empty.");
+            receivedMessage.reply("Only works for voice channels.");
             return;
         }
         if (!wantToJoinChannel.permissionsFor(receivedMessage.member).any("VIEW_CHANNEL")) {
-            receivedMessage.channel.send("You can only request a join for channels you can see.");
+            receivedMessage.reply("You can only request a join for channels you can see.");
+            return;
+        }
+        if (wantToJoinChannel.members.size === 0) { /////// hier fkt was nicht
+            receivedMessage.reply("Channel is empty.");
             return;
         }
         var usersInChannelNoCams = {
@@ -59,7 +59,7 @@ module.exports = {
             }
         })
         if (!usersInChannelNoCams) {
-            receivedMessage.channel.send("Channel is empty.2");
+            receivedMessage.reply("Channel is empty. Just a cam or bot.");
             return;
         }
         startvote(receivedMessage, usersInChannelNoCams, wantToJoinChannel);
@@ -135,7 +135,7 @@ async function startvote(msg, userInC, joinThis) {
             ergText += "\nNobody voted.";
         }
         voteMsg.channel.send(msg.author.toString() + ergText).then(message => {
-            ergMsg=message;
+            ergMsg = message;
         });
         voteMsg.delete();
         if (join) {
@@ -146,4 +146,3 @@ async function startvote(msg, userInC, joinThis) {
         }, 5000);
     })
 }
-
