@@ -1,15 +1,18 @@
 //*******Message Handling**********
+const {
+    DC_TOKEN, DATABASE_URL, TEST_SERVER
+} = require("./util/BOTtaerUtil.js");
 const fs = require('fs');
 const Discord = require('discord.js');
 var pg = require("pg");
-var CON_STRING = process.env.DATABASE_URL;
-if (CON_STRING == undefined) {
+if (!DATABASE_URL || !DC_TOKEN) {
+    console.log(DATABASE_URL +" || "+DC_TOKEN +" || "+ TEST_SERVER)
     console.log("Error: Environment variables");
     process.exit(1);
 }
 pg.defaults.ssl = true;
 var dbClient = new pg.Client({
-    connectionString: CON_STRING
+    connectionString: DATABASE_URL
     , ssl: {
         rejectUnauthorized: false
     }
@@ -21,7 +24,6 @@ const client = new Discord.Client({
     }
 });
 client.dbClient = dbClient;
-client.testMode = false;
 client.guildConfigs = new Discord.Collection(); //{guildID[key],prefix,DJrole,busy[true,wenn music oder monitoring], monitoringAll { start time, users[],currentlyMonitoring},monitoringUsers}
 client.commands = new Discord.Collection();
 client.musicQueue = new Discord.Collection(); // {playing,songs,connection,loop,volume}
@@ -56,7 +58,7 @@ async function initGuildConfigs() {
                 dbResponse.rows.forEach(r => {
                         client.guildConfigs.set(r.guildid, {
                             guildID: r.guildid
-                            , prefix: r.prefix
+                            , prefix: TEST_SERVER ? "T" : r.prefix
                             , DJrole: r.djrole
                             , busy: false
                             , monitoringAll: null
@@ -197,6 +199,6 @@ app.get("/ping", function (req, res) {
 app.listen(PORT, function () {
     console.log(`Soundboard Server for BÖT on port ${PORT}`);
 });
-client.login(process.env.DC_TOKEN);
+client.login(DC_TOKEN);
 ///for Web GUI
 //*****************************

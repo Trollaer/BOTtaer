@@ -12,11 +12,14 @@ module.exports = {
         playF(receivedMessage, arguments);
     }
 }
+const {
+    YT_API_KEY
+} = require("../../util/BOTtaerUtil.js");
 const music = require("../../botJS/lib/music.js");
 const ytdl = require("ytdl-core");
 const YouTubeAPI = require("simple-youtube-api");
 const https = require("https");
-const youtube = new YouTubeAPI(process.env.YT_API_KEY);
+const youtube = new YouTubeAPI(YT_API_KEY);
 const helpF = require("../../botJS/lib/helpFunctions")
 async function playF(receivedMessage, args) {
     var client = receivedMessage.client;

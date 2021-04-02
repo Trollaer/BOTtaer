@@ -1,4 +1,8 @@
 module.exports = async(client, guild) => {
+    const {
+        TEST_SERVER
+    } = require("../util/BOTtaerUtil.js");
+    if (TEST_SERVER) return;
     const dbClient = client.dbClient;
     await dbClient.query("INSERT INTO guildConfigs (guildID, DJRole) VALUES ($1 , $2)", [guild.id, guild.roles.everyone.id], function (dbError, dbResponse) {
         if (dbError) {

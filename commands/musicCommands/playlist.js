@@ -1,7 +1,10 @@
 const Discord = require("discord.js");
 const music = require("../../botJS/lib/music.js");
 const YouTubeAPI = require("simple-youtube-api");
-const youtube = new YouTubeAPI(process.env.YT_API_KEY);
+const {
+    YT_API_KEY
+} = require("../../util/BOTtaerUtil.js");
+const youtube = new YouTubeAPI(YT_API_KEY);
 module.exports = {
     name: "playlist"
     , aliases: ["pl"]

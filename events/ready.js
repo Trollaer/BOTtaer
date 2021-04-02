@@ -1,25 +1,11 @@
 module.exports = (client) => {
-    testMode=client.testMode;
-    if (!testMode) {
-        testMode = false;
-        client.user.setPresence({
-            status: 'online'
-            , activity: {
-                name: "'$help' to show all commmands."
-                , type: 'WATCHING'
-            , }
-        })
-    }
-    else {
-        testMode = true;
-        client.user.setPresence({
-            status: 'dnd'
-            , activity: {
-                name: "TEST MODE: no commands except from the bots' team."
-                , type: 'COMPETING'
-            , }
-        })
-    }
+    client.user.setPresence({
+        status: 'online'
+        , activity: {
+            name: "'$help' to show all commmands."
+            , type: 'WATCHING'
+        , }
+    })
     console.log("Started!");
     try {
         client.commands.forEach(c => {

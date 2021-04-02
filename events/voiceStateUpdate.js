@@ -1,4 +1,8 @@
 module.exports = (client, oldState, newState) => {
+    const {
+        TEST_SERVER
+    } = require("../util/BOTtaerUtil.js");
+    if (TEST_SERVER) return;
     checkAlone(client, newState);
     if (oldState.channelID === null || typeof oldState.channelID == 'undefined') return;
     if (newState.id !== client.user.id) return;
