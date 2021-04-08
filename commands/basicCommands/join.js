@@ -10,15 +10,15 @@ module.exports = {
         joinfn(receivedMessage, arguments);
     }
 }
-const helpFkts = require("../../botJS/lib/helpFunctions")
+const helpF = require("../../botJS/lib/helpFunctions")
 
 function joinfn(receivedMessage, args) {
     if (receivedMessage.member.hasPermission("ADMINISTRATOR") || !helpF.checkBusy(receivedMessage.client, receivedMessage.guild.id)) {
         var channelToJoin = receivedMessage.member.voice.channel;
-        helpFkts.joinIn(channelToJoin);
+        helpF.joinIn(channelToJoin);
     }
     else {
-        receivedMessage.reply("Böt is busy doning something in a other chanel.");
+        receivedMessage.reply("Böt is busy doing something in an other channel.");
     }
     if (receivedMessage.deletable) {
         receivedMessage.delete().catch(console.error);
