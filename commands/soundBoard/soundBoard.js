@@ -1,7 +1,7 @@
 module.exports = {
     name: "soundboard"
     , aliases: ["sb"]
-    , description: "Lets you play sounds from a soundboard.\nBöt needs to be in a channel and it"
+    , description: "Lets you play sounds from a soundboard.\n:exclamation:Böt **needs** to be in a channel to use the soundboard. (use {prefix}join for böt to join your channel)"
     , cType: "Soundboard"
     , args: false
     , cooldown: 5

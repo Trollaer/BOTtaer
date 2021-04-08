@@ -122,7 +122,7 @@ app.get("/soundboard/:guildID", function (req, res) { // error Msg und nur einma
 });
 app.get("/soundboardAPI/getSounds", function (req, res) {
     var folderList = [];
-    console.log("TEST LOG");
+    //console.log("TEST LOG");
     fs.readdirSync('./resources/soundEffects').forEach(folder => {
         var fileList = [];
         fs.readdirSync(`./resources/soundEffects/${folder}`).forEach(file => {
@@ -133,7 +133,7 @@ app.get("/soundboardAPI/getSounds", function (req, res) {
             , files: fileList
         });
     })
-    console.log(folderList);
+    //console.log(folderList);
     res.send(folderList);
 });
 app.get("/soundboardAPI/requestPlay/:guildID/:folder/:file", function (req, res) {
