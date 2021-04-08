@@ -22,7 +22,7 @@ function createTeamsCommand(arguments, receivedMessage) {
     //alle nicht cam user
     var usersChannel = receivedMessage.member.voice.channel;
     if (usersChannel == null) {
-        receivedMessage.channel.send("You must be in a voice-channel to use this command!");
+        helpFkts.sendMsg(receivedMessage.channel,"You must be in a voice-channel to use this command!");
         return;
     }
     var chan = client.channels.cache.get(`${usersChannel.id}`);
@@ -43,7 +43,7 @@ function createTeamsCommand(arguments, receivedMessage) {
         numberOfTeams = parseInt(arguments[0], 10);
     }
     if (numberOfTeams > UsersNoCams.length) {
-        receivedMessage.channel.send("More Teams then Players!");
+        helpFkts.sendMsg(receivedMessage.channel,"More Teams then Players!");
         return;
     }
     var TeamsMsg = "";
@@ -63,9 +63,8 @@ function createTeamsCommand(arguments, receivedMessage) {
             teamEmbed.description = teamEmbed.description.substr(0, teamEmbed.description.indexOf("\n", 500)) + "\n. . .";
         }
         //data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
-        receivedMessage.channel.send({
-            embed: teamEmbed
+        helpFkts.sendMsg(receivedMessage.channel,{
+            complete: teamEmbed
         });
     }
-    //receivedMessage.channel.send(TeamsMsg);
 }

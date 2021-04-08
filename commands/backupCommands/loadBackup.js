@@ -10,7 +10,6 @@ module.exports = {
     , usage: "<backupID> [roles/noreset]  or  'reset'/'list'"
     , explanation: "Give the single operations some time, when the server is huge the minute from the cooldown for this command might not be enough.\n**__Options:__**\n```ini\n['reset']: Resets the whole server by deleting all channels/roles.\n['list']: Shows you a list of all the backups for this server.\n[<backupID>]: Loads all channels/roles of the server-backup with the backupID. The server gets reseted first.\n[<backupID> roles]: Gives every user back the roles he previously had.\n [<backupID> noreset] Loads the server-backup without reseting first. Which means every role/channel gets added additionaly to the existing ones.```"
     , execute(receivedMessage, arguments) {
-        //receivedMessage.channel.send('test');
         loadFn(receivedMessage, arguments);
     }
 }

@@ -8,15 +8,16 @@ module.exports = {
     , guildOnly: true
     , cooldown: 10
     , execute(receivedMessage, arguments) {
-        receivedMessage.channel.send(':white_check_mark: | Backup create! You receive the backupID via DM.');
+        helpF.sendMsg(receivedMessage.channel, ':white_check_mark: | Backup create! You receive the backupID via DM.');
         backupfn(receivedMessage, arguments);
     }
 }
 const fs = require('fs');
 const backup = require("../../botJS/backupDC/backupmain.js");
+const helpF = require("../../botJS/lib/helpFunctions");
 
 function backupfn(receivedMessage, args) {
     //evtl options
-    var dbClient=receivedMessage.client.dbClient;
+    var dbClient = receivedMessage.client.dbClient;
     backup.create(receivedMessage.guild, receivedMessage.author, dbClient);
 }

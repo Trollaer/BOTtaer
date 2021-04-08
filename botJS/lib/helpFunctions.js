@@ -1,4 +1,76 @@
-//check DJ role
+//evtl überladen
+exports.sendMsg = function (channel, msg_description, options) {
+        if (!options) {
+            if (typeof msg_description !== "string" && (msg_description.complete || msg_description.title)) {
+                options = msg_description;
+            }
+            else {
+                options = {
+                    color: "#82fa9e"
+                    , deleteAfter: false
+                }
+            }
+        }
+        var embed;
+        if (options.complete) {
+            embed = options.complete;
+        }
+        else {
+            embed = {
+                description: msg_description
+            };
+            if (embed.description.length >= 2030) {
+                embed.description = embed.description.substr(0, embed.description.indexOf("\n", 2030)) + "\n. . .";
+            }
+            embed.color = options.color;
+            if (options.title) {
+                embed.title = options.title;
+                if (embed.title.length >= 256) {
+                    embed.title = embed.title.substr(0, 240) + " . . .";
+                }
+            }
+            if (options.thumbnail) {
+                var attachment;
+                const Discord = require('discord.js');
+                if (options.thumbnail === true) {
+                    embed.thumbnail = {
+                        url: "attachment://botbasicicon.png"
+                    };
+                    attachment = new Discord.MessageAttachment("./resources/icons/botbasicicon.png", "botbasicicon.png");
+                    embed.files = [attachment];
+                }
+                else if (options.thumbnail.includes("http")) {
+                    embed.thumbnail = {
+                        url: options.thumbnail
+                    };
+                    console.log("HTTP")
+                }
+                else {
+                    embed.thumbnail = {
+                        url: "attachment://" + options.thumbnail
+                    };
+                    attachment = new Discord.MessageAttachment(("./resources/icons/" + options.thumbnail), options.thumbnail);
+                    embed.files = [attachment];
+                }
+            }
+        }
+        var ats = options.ats;
+        channel.send(ats, {
+            embed: embed
+        }).then(mssg => {
+            if (options.deleteAfter) {
+                setTimeout(function () {
+                    if (mssg && !mssg.deleted) {
+                        mssg.delete().catch(console.error);
+                    }
+                    else {
+                        console.log("NO MSSG")
+                    }
+                }, options.deleteAfter);
+            }
+        });
+    }
+    //check DJ role
 exports.checkDJrole = function (member, guildID) {
         const conf = member.client.guildConfigs.get(guildID);
         var djRole;
@@ -15,7 +87,7 @@ exports.checkDJrole = function (member, guildID) {
                 perm = true;
             }
         }
-        else{
+        else {
             perm = true;
         }
         return perm;
@@ -145,18 +217,18 @@ exports.shuffle = function (array) {
     return array;
 }
 exports.joinIn = function (channel) {
-    if (channel) {
-        var conne = channel.join().then(connection => {
-            // Yay, it worked!
-            console.log("Successfully connected.");
-        }).catch(e => {
-            // Oh no, it errored! Let's log it to console :)
-            console.error(e);
-        });
-        return conne;
+        if (channel) {
+            var conne = channel.join().then(connection => {
+                // Yay, it worked!
+                console.log("Successfully connected.");
+            }).catch(e => {
+                // Oh no, it errored! Let's log it to console :)
+                console.error(e);
+            });
+            return conne;
+        }
     }
-}
-//*************monitor user****************
+    //*************monitor user****************
 exports.checkMonitoredMember = function (userData, member, speaking) {
     var timeNow = Date.now();
     if (!userData.lastEventValue) {

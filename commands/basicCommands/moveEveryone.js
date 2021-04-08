@@ -26,15 +26,15 @@ module.exports = {
             })
             //console.log(wantToJoinChannel.name + "***********")
         if (!wantToJoinChannel) {
-            receivedMessage.channel.send("Make sure you spelled the channel name right.");
+            helpF.sendMsg(receivedMessage.channel,"Make sure you spelled the channel name right.");
             return;
         }
         if (!wantToJoinChannel.type === "voice") {
-            receivedMessage.channel.send("Only works for voice channels.");
+            helpF.sendMsg(receivedMessage.channel,"Only works for voice channels.");
             return;
         }
         if (!wantToJoinChannel.permissionsFor(receivedMessage.member).any("VIEW_CHANNEL") && !wantToJoinChannel.permissionsFor(receivedMessage.member).any("MOVE_MEMBERS")) {
-            receivedMessage.channel.send("You can only move all to a channel you can see and move members.");
+            helpF.sendMsg(receivedMessage.channel,"You can only move all to a channel you can see and move members.");
             return;
         }
         var usersInChannel = {
@@ -48,17 +48,17 @@ module.exports = {
             usersInChannel.names.push(member.toString());
         })
         if (!usersInChannel) {
-            receivedMessage.channel.send("Channel is empty.");
+            helpF.sendMsg(receivedMessage.channel,"Channel is empty.");
             return;
         }
         moveAll(receivedMessage, usersInChannel, wantToJoinChannel);
     }
 }
-const helpFkts = require("../../botJS/lib/helpFunctions");
+const helpF = require("../../botJS/lib/helpFunctions");
 function moveAll(msg,userInC,joinThis){
     var memb;
     userInC.basic.forEach(uID => {
         memb=msg.guild.members.cache.get(uID);
-        helpFkts.moveUserToChannel(memb, joinThis, msg);
+        helpF.moveUserToChannel(memb, joinThis, msg);
     });
 }

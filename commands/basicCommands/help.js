@@ -1,6 +1,6 @@
 module.exports = {
     name: 'help'
-    , description: 'List all of the commands or info about a specific command.\nCredits to <@Trollaer>.'
+    , description: 'List all of the commands or info about a specific command.'
     , aliases: ['commands', 'c', 'h']
     , cType: "Basic"
     , usage: '[command_name]'
@@ -10,6 +10,7 @@ module.exports = {
     }]
     , cooldown: 5
     , execute(message, args) {
+        const helpF = require("../../botJS/lib/helpFunctions");
         var data = "";
         var titleText;
         const {
@@ -72,8 +73,9 @@ module.exports = {
             exampleEmbed.description = exampleEmbed.description.substr(0, exampleEmbed.description.indexOf("\n", 500)) + "\n. . .";
         }
         //data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
-        message.channel.send({
-            embed: exampleEmbed
+        helpF.sendMsg(message.channel, {
+            complete: exampleEmbed
+            , deleteAfter: 30000
         });
     }
     , init(client) {

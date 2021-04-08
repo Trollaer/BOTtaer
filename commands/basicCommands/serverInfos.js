@@ -7,6 +7,7 @@ module.exports = {
     , guildOnly: true
     , cooldown: 20
     , execute(receivedMessage, arguments) {
+        const helpF = require("../../botJS/lib/helpFunctions");
         var guild = receivedMessage.guild
         var conf = receivedMessage.client.guildConfigs.get(guild.id)
         if (!conf) return receivedMessage.reply("Error conf")
@@ -60,8 +61,9 @@ module.exports = {
             exampleEmbed.description = exampleEmbed.description.substr(0, exampleEmbed.description.indexOf("\n", 500)) + "\n. . .";
         }
         //data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
-        receivedMessage.channel.send({
-            embed: exampleEmbed
+        helpF.sendMsg(receivedMessage.channel, {
+            complete: exampleEmbed
+            , deleteAfter: 20000
         });
     }
 }

@@ -122,8 +122,8 @@ async function playlistF(message, args, fromPlay) {
     if (playlistEmbed.footer.text.length >= 2048) {
         playlistEmbed.footer.text = playlistEmbed.footer.text.substr(0, 2007) + " . . .";
     }
-    message.channel.send({
-        embed: playlistEmbed
+    helpF.sendMsg(message.channel, {
+        complete: playlistEmbed
     }).catch(console.error);
     if (!serverQueue) {
         client.musicQueue.set(message.guild.id, queueConstruct);
