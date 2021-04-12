@@ -63,7 +63,9 @@ module.exports = {
             return;
         }
         startvote(receivedMessage, usersInChannelNoCams, wantToJoinChannel);
-        receivedMessage.delete();
+        if (receivedMessage.deletable) {
+            receivedMessage.delete().catch(console.error);
+        }
     }
 }
 const helpFkts = require("../../botJS/lib/helpFunctions");

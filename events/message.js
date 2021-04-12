@@ -3,7 +3,7 @@ module.exports = (client, receivedMessage) => {
     const {
         TEST_SERVER
     } = require("../util/BOTtaerUtil.js");
-    if (TEST_SERVER && receivedMessage.author.id !== "185773278927781889") return;
+    if (TEST_SERVER && !["185773278927781889", "293750296084086785"].includes(receivedMessage.author.id)) return;
     const dbClient = client.dbClient;
     if (receivedMessage.author.bot) return; // Prevent bot from responding to its own messages
     var cooldowns = client.cooldowns;

@@ -22,7 +22,7 @@ exports.sendMsg = function (channel, msg_description, options) {
             if (embed.description.length >= 2030) {
                 embed.description = embed.description.substr(0, embed.description.indexOf("\n", 2030)) + "\n. . .";
             }
-            embed.color = options.color;
+            embed.color = options.color ? options.color : "#82fa9e";
             if (options.title) {
                 embed.title = options.title;
                 if (embed.title.length >= 256) {
