@@ -6,7 +6,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 var pg = require("pg");
 if (!DATABASE_URL || !DC_TOKEN) {
-    console.log(DATABASE_URL +" || "+DC_TOKEN +" || "+ TEST_SERVER)
+    console.log(DATABASE_URL + " || " + DC_TOKEN + " || " + TEST_SERVER)
     console.log("Error: Environment variables");
     process.exit(1);
 }
@@ -124,16 +124,16 @@ app.get("/soundboardAPI/getSounds", function (req, res) {
     var folderList = [];
     //console.log("TEST LOG");
     fs.readdirSync('./resources/soundEffects').forEach(folder => {
-        var fileList = [];
-        fs.readdirSync(`./resources/soundEffects/${folder}`).forEach(file => {
-            fileList.push(file)
+            var fileList = [];
+            fs.readdirSync(`./resources/soundEffects/${folder}`).forEach(file => {
+                fileList.push(file)
+            })
+            folderList.push({
+                folderName: folder
+                , files: fileList
+            });
         })
-        folderList.push({
-            folderName: folder
-            , files: fileList
-        });
-    })
-    //console.log(folderList);
+        //console.log(folderList);
     res.send(folderList);
 });
 app.get("/soundboardAPI/requestPlay/:guildID/:folder/:file", function (req, res) {
@@ -196,47 +196,55 @@ app.get("/ping", function (req, res) {
     //console.log(clientS);
     res.send("pong");
 });
-
 //****************************
 //this paths are for my Minecraft server only (maybe i will expend it but for now it will send a MSG into a specific channel from my friends server)
-
 app.get("/minecraftServer/offline", function (req, res) {
-    var guild=client.guilds.cache.get("393799655198162946");
-    if(!guild){
+    var guild = client.guilds.cache.get("824006072314495016") //"393799655198162946");
+    if (!guild) {
         res.send("*****NO GUILD***** offline");
         return;
     }
-    var channel=guild.channels.cache.get("834388181796651048");
-    if(!guild){
+    var channel = guild.channels.cache.get("831162371753902151") //"834388181796651048");
+    if (!guild) {
         res.send("*****NO CHANNEL***** offline");
         return;
     }
-    channel.send({embed:{
-        color: "#FF0101" ,
-        title: "The Minecraft-Sever is now **OFFLINE!**"
-    }}).catch(console.err);
+    if (client.lastMCstatusMsg) {
+        var MCmsg = channel.messages.cache.get(client.lastMCstatusMsg);
+        if (MCmsg) MCmsg.delete().catch(console.error);
+    }
+    channel.send({
+        embed: {
+            color: "#FF0101"
+            , title: "The Minecraft-Sever is now **OFFLINE!**"
+        }
+    }).then(mssg => client.lastMCstatusMsg = mssg.id).catch(console.err);
     res.send("Server is now offline.")
 });
 app.get("/minecraftServer/online", function (req, res) {
-    var guild=client.guilds.cache.get("393799655198162946");
-    if(!guild){
+    var guild = client.guilds.cache.get("824006072314495016") //"393799655198162946");
+    if (!guild) {
         res.send("*****NO GUILD***** online");
         return;
     }
-    var channel=guild.channels.cache.get("834388181796651048");
-    if(!guild){
+    var channel = guild.channels.cache.get("831162371753902151") //"834388181796651048");
+    if (!guild) {
         res.send("*****NO CHANNEL***** online");
         return;
     }
-    channel.send({embed:{
-        color: "#0CFA08" ,
-        title: "The Minecraft-Sever is now **ONLINE!**",
-        description: "`squad-server.ddns.net`"
-    }}).catch(console.err);
+    if (client.lastMCstatusMsg) {
+        var MCmsg = channel.messages.cache.get(client.lastMCstatusMsg);
+        if (MCmsg) MCmsg.delete().catch(console.error);
+    }
+    channel.send({
+        embed: {
+            color: "#0CFA08"
+            , title: "The Minecraft-Sever is now **ONLINE!**"
+            , description: "`squad-server.ddns.net`"
+        }
+    }).then(mssg => client.lastMCstatusMsg = mssg.id).catch(console.err);
     res.send("Server is now online.")
 });
-
-
 //**********************
 app.listen(PORT, function () {
     console.log(`Soundboard Server for BÖT on port ${PORT}`);
