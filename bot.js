@@ -211,7 +211,7 @@ app.get("/minecraftServer/offline", function (req, res) {
         res.send("*****NO CHANNEL***** offline");
         return;
     }
-    channel.send("@everyone",{embed:{
+    channel.send({embed:{
         color: "#FF0101" ,
         title: "The Minecraft-Sever is now **OFFLINE!**"
     }}).catch(console.err);
@@ -228,7 +228,7 @@ app.get("/minecraftServer/online", function (req, res) {
         res.send("*****NO CHANNEL***** online");
         return;
     }
-    channel.send("@everyone",{embed:{
+    channel.send({embed:{
         color: "#0CFA08" ,
         title: "The Minecraft-Sever is now **ONLINE!**",
         description: "`squad-server.ddns.net`"
