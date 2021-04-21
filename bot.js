@@ -201,12 +201,12 @@ app.get("/ping", function (req, res) {
 //this paths are for my Minecraft server only (maybe i will expend it but for now it will send a MSG into a specific channel from my friends server)
 
 app.get("/minecraftServer/offline", function (req, res) {
-    var guild=client.guilds.cache.get("824006072314495016");//"393799655198162946");
+    var guild=client.guilds.cache.get("393799655198162946");
     if(!guild){
         res.send("*****NO GUILD***** offline");
         return;
     }
-    var channel=guild.channels.cache.get("831162371753902151");//"834388181796651048");
+    var channel=guild.channels.cache.get("834388181796651048");
     if(!guild){
         res.send("*****NO CHANNEL***** offline");
         return;
@@ -215,24 +215,25 @@ app.get("/minecraftServer/offline", function (req, res) {
         color: "#FF0101" ,
         title: "The Minecraft-Sever is now **OFFLINE!**"
     }}).catch(console.err);
-    res.send("DONE")
+    res.send("Server is now offline.")
 });
 app.get("/minecraftServer/online", function (req, res) {
-    var guild=client.guilds.cache.get("824006072314495016");//"393799655198162946");
+    var guild=client.guilds.cache.get("393799655198162946");
     if(!guild){
         res.send("*****NO GUILD***** online");
         return;
     }
-    var channel=guild.channels.cache.get("831162371753902151");//"834388181796651048");
+    var channel=guild.channels.cache.get("834388181796651048");
     if(!guild){
         res.send("*****NO CHANNEL***** online");
         return;
     }
     channel.send("@everyone",{embed:{
         color: "#0CFA08" ,
-        title: "The Minecraft-Sever is now **ONLINE!**"
+        title: "The Minecraft-Sever is now **ONLINE!**",
+        description: "`squad-server.ddns.net`"
     }}).catch(console.err);
-    res.send("DONE")
+    res.send("Server is now online.")
 });
 
 
