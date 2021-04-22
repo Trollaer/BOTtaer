@@ -29,6 +29,7 @@ client.commands = new Discord.Collection();
 client.musicQueue = new Discord.Collection(); // {playing,songs,connection,loop,volume}
 client.cooldowns = new Discord.Collection();
 client.MCstatus = new Map();
+client.MCserverstatus = [];
 //const prefix = "$";
 const helpF = require("./botJS/lib/helpFunctions.js")
     //commands einlesen
@@ -199,77 +200,64 @@ app.get("/ping", function (req, res) {
 });
 //****************************
 //this paths are for my Minecraft server only (maybe i will expend it but for now it will send a MSG into a specific channel from my friends server)
-app.get("/minecraftServerStatusUpdate/:guildID/:channelID/:status", function (req, res) {
-    var guildID = req.params.guildID;
-    var channelID = req.params.channelID;
+app.get("/minecraftServerStatusUpdate/:servername/:status", function (req, res) {
+    var servername = req.params.servername;
     var status = req.params.status;
-    var guild = client.guilds.cache.get(guildID);
-    if (!guild) {
-        res.send("*****NO GUILD***** " + status);
-        return;
-    }
-    var channel = guild.channels.cache.get(channelID);
-    if (!guild) {
-        res.send("*****NO CHANNEL***** " + status);
-        return;
-    }
-    var lastMCstatusMsg = client.MCstatus.get(guildID);
-    //console.log(client.MCstatus)
-    if (lastMCstatusMsg) {
-        console.log("DELETE")
-        var MCmsg = channel.messages.cache.get(lastMCstatusMsg.SmsgID);
-        //console.log(MCmsg);
-        if (MCmsg) MCmsg.delete().catch(console.error);
-    }
-    msgEmbed = {
-        color: status === "online" ? "#0CFA08" : "#FF0101"
-        , title: "The Minecraft-Sever is currently **" + status.toUpperCase() + "!**"
-    }
-    channel.send({
-        embed: msgEmbed
-    }).then(mssg => client.MCstatus.set(guildID, {
-        SchannelID: channelID
-        , SmsgID: mssg.id
-    })).catch(console.err);
-    //console.log(client.MCstatus)
-    res.send("Server is now " + status)
+    notifyMCserverStatusOneServer(servername, status);
+    res.send(servername + " is now " + status)
 });
-app.get("/minecraftServerStatusUpdate/all/:status", async function (req, res) {
-    var status = req.params.status;
-    var resText = "All Servers are now " + status;
-    await client.MCstatus.forEach(async function (McstatusObject, guildID) {
-        //console.log(guildID + "||" + McstatusObject)
-        var guild = await client.guilds.cache.get(guildID);
-        //console.log(guild)
-        if (!guild) {
-            resText += "\n*****NO GUILD***** ";
-            return;
+async function notifyMCserverStatusOneServer(servername, status) {
+    var msgEmbed = {
+        color: status === "online" ? "#0CFA08" : "#FF0101"
+        , title: "The Minecraft-Sever: `" + servername + "` is currently **" + status.toUpperCase() + "!**"
+    }
+    dbClient.query("SELECT * FROM mcservernotifylist WHERE mcservername = $1", [servername], function (dbErrorSelect, dbResponseSelect) {
+        if (dbErrorSelect) {
+            return console.log("ERROR while loading " + servername);
         }
-        var lastMCstatusMsg = McstatusObject;
-        if (lastMCstatusMsg) {
-            var channel = guild.channels.cache.get(lastMCstatusMsg.SchannelID);
-            if (!channel) {
-                resText += "\n*****NO CHANNEL***** ";
+        if (dbResponseSelect.rows.length == 0) {
+            return console.log("No server to notify for " + servername);
+        }
+        dbResponseSelect.rows.forEach(r => {
+            var msgID = r.msgid;
+            var channelID = r.channelid;
+            var guildID = r.guildid;
+            var guild = client.guilds.cache.get(guildID);
+            if (!guild) {
+                //res.send("*****NO GUILD***** " + status);
                 return;
             }
-            //console.log("DELETE")
-            var MCmsg = channel.messages.cache.get(lastMCstatusMsg.SmsgID);
-            //console.log(MCmsg);
-            if (MCmsg) MCmsg.delete().catch(console.error);
-        }
-        msgEmbed = {
-            color: status === "online" ? "#0CFA08" : "#FF0101"
-            , title: "The Minecraft-Sever is currently **" + status.toUpperCase() + "!**"
-        }
-        channel.send({
-            embed: msgEmbed
-        }).then(mssg => client.MCstatus.set(guildID, {
-            SchannelID: McstatusObject.SchannelID
-            , SmsgID: mssg.id
-        })).catch(console.err);
-        //console.log(client.MCstatus)
+            var channel = guild.channels.cache.get(channelID);
+            if (!channel) {
+                //res.send("*****NO CHANNEL***** " + status);
+                return;
+            }
+            //console.log(client.MCstatus)
+            if (msgID) {
+                //console.log("DELETE")
+                var MCmsg = channel.messages.cache.get(msgID);
+                //console.log(MCmsg);
+                if (MCmsg) MCmsg.delete().catch(console.error);
+            }
+            channel.send({
+                embed: msgEmbed
+            }).then(mssg => {
+                dbClient.query("INSERT INTO mcservernotifylist (mcservername, guildid ,channelid, msgid) VALUES($1,$2,$3,$4) ON CONFLICT (mcservername, guildid) DO UPDATE SET channelid = $3 , msgid = $4", [servername, guildID, channelID, mssg.id], function (dbErrorInsert, dbResponseInsert) {
+                    if (dbErrorInsert) {
+                        console.log(dbErrorInsert);
+                        return;
+                    }
+                })
+            }).catch(console.err);
+        })
     })
-    res.send(resText)
+}
+app.get("/minecraftServerStatusUpdate/all/:status", async function (req, res) {
+    var status = req.params.status;
+    client.MCserverstatus.forEach((value, servername) => {
+        notifyMCserverStatusOneServer(servername, status);
+    })
+    res.send("All servers " + status)
 });
 //**********************test server "824006072314495016") //  test : channel "831162371753902151") //
 app.listen(PORT, function () {
