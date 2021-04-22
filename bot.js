@@ -254,8 +254,14 @@ async function notifyMCserverStatusOneServer(servername, status) {
 }
 app.get("/minecraftServerStatusUpdate/all/:status", async function (req, res) {
     var status = req.params.status;
-    client.MCserverstatus.forEach((value, servername) => {
-        notifyMCserverStatusOneServer(servername, status);
+    dbClient.query("SELECT DISTINCT mcservername FROM mcservernotifylist", [servername], function (dbErrorSelect, dbResponseSelect) {
+        if (dbErrorSelect) {
+            return console.log("ERROR select all servers")
+        }
+        dbResponseSelect.rows.forEach(r => {
+            
+            notifyMCserverStatusOneServer(r.mcservername, status)
+        });
     })
     res.send("All servers " + status)
 });
