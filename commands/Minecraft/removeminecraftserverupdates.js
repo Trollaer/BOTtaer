@@ -15,7 +15,6 @@ module.exports = {
         if (arguments.length != 1) return receivedMessage.reply(this.usage);
         var guildID = receivedMessage.guild.id;
         var servername = arguments[0];
-        const dbClient = receivedMessage.client.dbClient;
         dbClient.query("DELETE FROM mcservernotifylist WHERE mcservername = $1", [servername], function (dbErrorSelect, dbResponseSelect) {
             if (dbErrorSelect) {
                 return console.log("ERROR delete server " + servername)
