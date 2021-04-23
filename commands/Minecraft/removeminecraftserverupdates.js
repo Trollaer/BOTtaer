@@ -11,6 +11,7 @@ module.exports = {
     , guildOnly: true
     , permissions: "ADMINISTRATOR"
     , async execute(receivedMessage, arguments) {
+        const dbClient = receivedMessage.client.dbClient;
         if (arguments.length != 1) return receivedMessage.reply(this.usage);
         var guildID = receivedMessage.guild.id;
         var servername = arguments[0];

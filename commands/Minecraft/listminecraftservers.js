@@ -9,6 +9,7 @@ module.exports = {
     , guildOnly: true
     , permissions: "ADMINISTRATOR"
     , async execute(receivedMessage, arguments) {
+        const dbClient = receivedMessage.client.dbClient;
         var response = ""
         dbClient.query("SELECT mcservername , channelid FROM mcservernotifylist WHERE guildid LIKE $1", ["%DUMMY%"], function (dbErrorSelect, dbResponseSelect) {
             if (dbErrorSelect) {
