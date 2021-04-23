@@ -211,7 +211,7 @@ async function notifyMCserverStatusOneServer(servername, status) {
         color: status === "online" ? "#0CFA08" : "#FF0101"
         , title: "The Minecraft-Sever: `" + servername + "` is currently **" + status.toUpperCase() + "!**"
     }
-    dbClient.query("SELECT mnl.mcservername AS mcservername, guildid, channelid, address, port, modpack FROM mcservernotifylist mnl JOIN mcserverlist sl ON sl.mcservername = mnl.mcservername WHERE sl.mcservername = $1", [servername], function (dbErrorSelect, dbResponseSelect) {
+    dbClient.query("SELECT mnl.mcservername AS mcservername, guildid, channelid, mssgid, address, port, modpack FROM mcservernotifylist mnl JOIN mcserverlist sl ON sl.mcservername = mnl.mcservername WHERE sl.mcservername = $1", [servername], function (dbErrorSelect, dbResponseSelect) {
         if (dbErrorSelect) {
             return console.log("ERROR while loading " + servername);
         }
