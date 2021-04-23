@@ -252,9 +252,9 @@ async function notifyMCserverStatusOneServer(servername, status) {
         })
     })
 }
-app.get("/minecraftServerStatusUpdate/all/:status", async function (req, res) {
+app.get("/minecraftServerStatusUpdateAll/:status", async function (req, res) {
     var status = req.params.status;
-    dbClient.query("SELECT mcservername FROM mcservernotifylist WHERE guildid LIKE $1",["%DUMMY%"], function (dbErrorSelect, dbResponseSelect) {
+    dbClient.query("SELECT mcservername FROM mcserverlist", function (dbErrorSelect, dbResponseSelect) {
         if (dbErrorSelect) {
             return console.log("ERROR select all servers")
         }

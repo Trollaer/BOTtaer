@@ -3,6 +3,7 @@
 ### BÖT
 [prio0]
 
+ // server list in andere DB mit ip,port, modpack
 alles über DB
 kein array beim Client
 

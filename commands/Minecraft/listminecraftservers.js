@@ -10,15 +10,23 @@ module.exports = {
     , permissions: "ADMINISTRATOR"
     , async execute(receivedMessage, arguments) {
         const dbClient = receivedMessage.client.dbClient;
+        const helpF = require("../../botJS/lib/helpFunctions");
         var response = ""
-        dbClient.query("SELECT mcservername , channelid FROM mcservernotifylist WHERE guildid LIKE $1", ["%DUMMY%"], function (dbErrorSelect, dbResponseSelect) {
+        dbClient.query("SELECT * FROM mcserverlist", function (dbErrorSelect, dbResponseSelect) {
             if (dbErrorSelect) {
                 return console.log("ERROR select all servers")
             }
             dbResponseSelect.rows.forEach(r => {
-                response += `\n\`${r.mcservername}\` running on PORT: \`${r.channelid}\``
+                response += `\n+ **${r.mcservername}** running on: \`${r.address}:${r.port}\``
+                if (r.modpack) {
+                    response += " with modpack: " + r.modpack;
+                }
             });
-            receivedMessage.channel.send(response);
+            helpF.sendMsg(receivedMessage.channel, response, {
+                color: "#2456f2"
+                , title: "List of all servers currently running:"
+                , deleteAfter: 30000
+            })
         })
     }
 }
