@@ -3,7 +3,7 @@
 module.exports = {
     name: 'addminecraftserverstatusupdates'
     , aliases: ["addmcserver", "addmcs"]
-    , description: "Notify if server is on/off"
+    , description: "Add a server to get notify if the server is on/off"
     , cType: "Minecraft"
     , cooldown: 5
     , args: true
