@@ -3,12 +3,7 @@
 ### BÖT
 [prio0]
 
- // server list in andere DB mit ip,port, modpack
-alles über DB
-kein array beim Client
 
-evtl strukturändern (server.name,guildiD als primary; channel , msgId)
-,dann immer selct wo servername und für jede reihe die gild über id -> nachricht senden
 
 status Guilds/Channels/lasMSGs in DB (INSERT INTO ... ON DUPLICATE KEY UPDATE
 [prio1]

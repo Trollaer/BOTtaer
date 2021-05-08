@@ -32,7 +32,7 @@ client.MCstatus = new Map();
 client.MCserverstatus = [];
 //const prefix = "$";
 const helpF = require("./botJS/lib/helpFunctions.js")
-    //commands einlesen
+//commands einlesen
 const commandFolders = fs.readdirSync('./commands');
 for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
@@ -58,17 +58,17 @@ async function initGuildConfigs() {
             }
             else {
                 dbResponse.rows.forEach(r => {
-                        client.guildConfigs.set(r.guildid, {
-                            guildID: r.guildid
-                            , prefix: TEST_SERVER ? "T" : r.prefix
-                            , DJrole: r.djrole
-                            , busy: false
-                            , monitoringAll: null
-                            , monitoringUsers: new Discord.Collection()
-                            , soundboard: r.soundboard
-                        })
+                    client.guildConfigs.set(r.guildid, {
+                        guildID: r.guildid
+                        , prefix: TEST_SERVER ? "T" : r.prefix
+                        , DJrole: r.djrole
+                        , busy: false
+                        , monitoringAll: null
+                        , monitoringUsers: new Discord.Collection()
+                        , soundboard: r.soundboard
                     })
-                    //console.log(client.guildConfigs)
+                })
+                //console.log(client.guildConfigs)
             }
         });
     }
@@ -126,16 +126,16 @@ app.get("/soundboardAPI/getSounds", function (req, res) {
     var folderList = [];
     //console.log("TEST LOG");
     fs.readdirSync('./resources/soundEffects').forEach(folder => {
-            var fileList = [];
-            fs.readdirSync(`./resources/soundEffects/${folder}`).forEach(file => {
-                fileList.push(file)
-            })
-            folderList.push({
-                folderName: folder
-                , files: fileList
-            });
+        var fileList = [];
+        fs.readdirSync(`./resources/soundEffects/${folder}`).forEach(file => {
+            fileList.push(file)
         })
-        //console.log(folderList);
+        folderList.push({
+            folderName: folder
+            , files: fileList
+        });
+    })
+    //console.log(folderList);
     res.send(folderList);
 });
 app.get("/soundboardAPI/requestPlay/:guildID/:folder/:file", function (req, res) {
@@ -223,27 +223,35 @@ async function notifyMCserverStatusOneServer(servername, status) {
             msgD += " with the modpack: " + dbResponseSelect.rows[0].modpack;
         }
         msgEmbed.description = msgD;
-        dbResponseSelect.rows.forEach(r => {
+        dbResponseSelect.rows.forEach(async function (r)  {
             var msgID = r.msgid;
             var channelID = r.channelid;
             var guildID = r.guildid;
             var guild = client.guilds.cache.get(guildID);
             if (!guild) {
                 //res.send("*****NO GUILD***** " + status);
+                console.log("NO Guild found for : " + guildID);
                 return;
             }
             var channel = guild.channels.cache.get(channelID);
             if (!channel) {
                 //res.send("*****NO CHANNEL***** " + status);
+                console.log("NO Channel found for : " + guild.name + " with " + channelID);
                 return;
             }
             //console.log(client.MCstatus)
+
+            //console.log("Test : " + guild.name + " in " + channel.name + " with " + msgID);
             if (msgID) {
                 //console.log("DELETE")
-                var MCmsg = channel.messages.cache.get(msgID);
-                //console.log(MCmsg);
-                if (MCmsg) MCmsg.delete().catch(console.error);
-            }
+                var MCmsg = await channel.messages.fetch(msgID);
+                //console.log(channel.messages.cache);
+                if (MCmsg) {
+                    //console.log("MSG FOUND")
+                    //console.log(MCmsg)
+                    MCmsg.delete().catch(console.error);
+                }
+            } 
             channel.send({
                 embed: msgEmbed
             }).then(mssg => {
