@@ -36,6 +36,7 @@
         "pug": "^3.0.2",
         "request": "^2.88.2",
         "simple-youtube-api": "^5.2.1",
+        "tcp-ping": "^0.1.1",
         "ytdl-core": "^4.5.0",
         "ytdl-core-discord": "^1.2.5"
     }
