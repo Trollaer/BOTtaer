@@ -302,7 +302,7 @@ if (SERVER_IP) {
                 return;
             }
             if (!lastIsAlive && isAlive) { // was offline, is now online
-                allServerStatusUpdate("online");
+                // allServerStatusUpdate("online"); // nicht alle online schalten
                 // console.log("turned off")
                 lastIsAlive = isAlive;
                 return;
