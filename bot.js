@@ -286,30 +286,38 @@ async function allServerStatusUpdate(status) {
 
 if (SERVER_IP) {
     console.log("Pinging " + SERVER_IP);
-    const ping = require('ping');
+    const ping = require('net-ping');
+    var session = ping.createSession();
     var lastIsAlive = false;
     setInterval(function () {
-        ping.sys.probe(SERVER_IP, function (isAlive) {
-            console.log("Pinged Server : "+ isAlive);
-            if (lastIsAlive === isAlive) { //was and is still offline/online
-                console.log("Same status")
-                return;
-            }
-            if (lastIsAlive && !isAlive) { // was online, is now offline
-                //allServerStatusUpdate("offline");
-                //message some one
-                console.log("turned on")
-                lastIsAlive = isAlive;
-                return;
-            }
-            if (!lastIsAlive && isAlive) { // was offline, is now online
-                // allServerStatusUpdate("online"); // nicht alle online schalten
-                console.log("turned off")
-                lastIsAlive = isAlive;
-                return;
+        session.pingHost(SERVER_IP, function (error, target) {
+            if (error)
+                if (error instanceof ping.RequestTimedOutError)
+                    console.log(target + ": Not alive");
+                else
+                    console.log(target + ": " + error.toString());
+            else {
+                console.log(target + ": Alive");
+                if (lastIsAlive === isAlive) { //was and is still offline/online
+                    console.log("Same status")
+                    return;
+                }
+                if (lastIsAlive && !isAlive) { // was online, is now offline
+                    //allServerStatusUpdate("offline");
+                    //message some one
+                    console.log("turned on")
+                    lastIsAlive = isAlive;
+                    return;
+                }
+                if (!lastIsAlive && isAlive) { // was offline, is now online
+                    // allServerStatusUpdate("online"); // nicht alle online schalten
+                    console.log("turned off")
+                    lastIsAlive = isAlive;
+                    return;
+                }
             }
         });
-    }, 30000 );//900000
+    }, 30000);//900000
 
 }
 

@@ -30,6 +30,7 @@
         "express-session": "^1.17.1",
         "ffmpeg": "^0.0.4",
         "ffmpeg-static": "^4.2.8",
+        "net-ping": "^1.2.3",
         "pg": "^8.5.1",
         "ping": "^0.4.1",
         "pug": "^3.0.2",
