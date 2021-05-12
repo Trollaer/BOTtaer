@@ -285,7 +285,7 @@ async function allServerStatusUpdate(status) {
 //ping the server ip to check if its offline
 
 if (SERVER_IP) {
-    console.log("Pinging "+SERVER_IP);
+    console.log("Pinging " + SERVER_IP);
     const ping = require('ping');
     var lastIsAlive = true;
     setInterval(function () {
@@ -298,15 +298,17 @@ if (SERVER_IP) {
                 allServerStatusUpdate("offline");
                 //message some one
                 //console.log("turned on")
+                lastIsAlive = isAlive;
                 return;
             }
             if (!lastIsAlive && isAlive) { // was offline, is now online
                 allServerStatusUpdate("online");
-               // console.log("turned off")
+                // console.log("turned off")
+                lastIsAlive = isAlive;
                 return;
             }
         });
-    }, 60000);
+    },  900000);
 
 }
 
