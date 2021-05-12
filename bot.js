@@ -290,6 +290,7 @@ if (SERVER_IP) {
     var lastIsAlive = true;
     setInterval(function () {
         ping.sys.probe(SERVER_IP, function (isAlive) {
+            console.log("Pinged Server : "+ isAlive);
             if (lastIsAlive === isAlive) { //was and is still offline/online
                 //console.log("Same status")
                 return;
