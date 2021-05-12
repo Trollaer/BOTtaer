@@ -1,6 +1,6 @@
 //*******Message Handling**********
 const {
-    DC_TOKEN, DATABASE_URL, TEST_SERVER
+    DC_TOKEN, DATABASE_URL, TEST_SERVER, SERVER_IP
 } = require("./util/BOTtaerUtil.js");
 const fs = require('fs');
 const Discord = require('discord.js');
@@ -223,7 +223,7 @@ async function notifyMCserverStatusOneServer(servername, status) {
             msgD += " with the modpack: " + dbResponseSelect.rows[0].modpack;
         }
         msgEmbed.description = msgD;
-        dbResponseSelect.rows.forEach(async function (r)  {
+        dbResponseSelect.rows.forEach(async function (r) {
             var msgID = r.msgid;
             var channelID = r.channelid;
             var guildID = r.guildid;
@@ -251,7 +251,7 @@ async function notifyMCserverStatusOneServer(servername, status) {
                     //console.log(MCmsg)
                     MCmsg.delete().catch(console.error);
                 }
-            } 
+            }
             channel.send({
                 embed: msgEmbed
             }).then(mssg => {
@@ -267,6 +267,11 @@ async function notifyMCserverStatusOneServer(servername, status) {
 }
 app.get("/minecraftServerStatusUpdateAll/:status", async function (req, res) {
     var status = req.params.status;
+    allServerStatusUpdate(status)
+    res.send("All servers " + status)
+
+});
+async function allServerStatusUpdate(status) {
     dbClient.query("SELECT mcservername FROM mcserverlist", function (dbErrorSelect, dbResponseSelect) {
         if (dbErrorSelect) {
             return console.log("ERROR select all servers")
@@ -275,11 +280,39 @@ app.get("/minecraftServerStatusUpdateAll/:status", async function (req, res) {
             notifyMCserverStatusOneServer(r.mcservername, status)
         });
     })
-    res.send("All servers " + status)
-});
+
+}
+//ping the server ip to check if its offline
+
+if (SERVER_IP) {
+    console.log("Pinging "+SERVER_IP);
+    const ping = require('ping');
+    var lastIsAlive = true;
+    setInterval(function () {
+        ping.sys.probe(SERVER_IP, function (isAlive) {
+            if (lastIsAlive === isAlive) { //was and is still offline/online
+                //console.log("Same status")
+                return;
+            }
+            if (lastIsAlive && !isAlive) { // was online, is now offline
+                allServerStatusUpdate("offline");
+                //message some one
+                //console.log("turned on")
+                return;
+            }
+            if (!lastIsAlive && isAlive) { // was offline, is now online
+                allServerStatusUpdate("online");
+               // console.log("turned off")
+                return;
+            }
+        });
+    }, 60000);
+
+}
+
 //**********************test server "824006072314495016") //  test : channel "831162371753902151") //
 app.listen(PORT, function () {
-    console.log(`Soundboard Server for BÖT on port ${PORT}`);
+    console.log(`Web Server for BÖT on port ${PORT}`);
 });
 client.login(DC_TOKEN);
 ///for Web GUI
