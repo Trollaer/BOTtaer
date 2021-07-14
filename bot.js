@@ -92,6 +92,29 @@ app.get("/", function (req, res) {
     //console.log(clientS);
     res.render("layout")
 });
+var lastAlive;
+var timerID;
+app.get("/imStillAlive/:server", function (req, res) {
+    console.log("ALIVE")
+    if (!lastAlive) {
+        timerID = setInterval(function () {
+            var currentTime = Date.now()
+            if ((currentTime - 1000 * 60 * 16) < lastAlive) {
+                return;
+            }
+            allServerStatusUpdate("offline");
+            console.log("DEAD")
+            lastAlive = null;
+            clearInterval(timerID)
+        }, 1000 * 60 * 15);
+    }
+    lastAlive = Date.now()
+    res.send("Alive")
+});
+
+
+// alle 15 mins schauen ob current time - 16 mins > lasttime
+
 app.get("/soundboard/:guildID", function (req, res) { // error Msg und nur einmal render
     var guildD = client.guilds.cache.get(req.params.guildID);
     if (!guildD) {
