@@ -101,11 +101,12 @@ app.get("/imStillAlive/:server", function (req, res) {
             var currentTime = Date.now()
             if ((currentTime - 1000 * 60 * 16) < lastAlive) {
                 return;
+            } else if (lastAlive) {
+                allServerStatusUpdate("offline");
+                console.log("DEAD")
+                lastAlive = null;
+                clearInterval(timerID)
             }
-            allServerStatusUpdate("offline");
-            console.log("DEAD")
-            lastAlive = null;
-            clearInterval(timerID)
         }, 1000 * 60 * 15);
     }
     lastAlive = Date.now()
