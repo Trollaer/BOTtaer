@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 module.exports = (client, receivedMessage) => {
 
-    const helpF = require("./botJS/lib/helpFunctions.js")
+
+    const helpF = require("../botJS/lib/helpFunctions");
     const {
         TEST_SERVER
     } = require("../util/BOTtaerUtil.js");
