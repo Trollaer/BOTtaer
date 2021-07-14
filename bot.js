@@ -268,8 +268,9 @@ async function notifyMCserverStatusOneServer(servername, status) {
             //console.log("Test : " + guild.name + " in " + channel.name + " with " + msgID);
             if (msgID) {
                 //console.log("DELETE")
-                var MCmsg = await channel.messages.fetch(msgID);
-                //console.log(channel.messages.cache);
+                
+                console.log(channel.messages.cache);
+                var MCmsg = await channel.messages.fetch(msgID).catch(console.error);;
                 if (MCmsg) {
                     //console.log("MSG FOUND")
                     //console.log(MCmsg)
