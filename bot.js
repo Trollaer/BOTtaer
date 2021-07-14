@@ -90,7 +90,7 @@ app.set("views", "./serverLib/views");
 app.set("view engine", "pug");
 app.get("/", function (req, res) {
     //console.log(clientS);
-    res.send(client);
+    res.render("layout")
 });
 app.get("/soundboard/:guildID", function (req, res) { // error Msg und nur einmal render
     var guildD = client.guilds.cache.get(req.params.guildID);
