@@ -1,6 +1,6 @@
 //*******Message Handling**********
 const {
-    DC_TOKEN, DATABASE_URL, TEST_SERVER, SERVER_IP
+    DC_TOKEN, DATABASE_URL, TEST_SERVER
 } = require("./util/BOTtaerUtil.js");
 const fs = require('fs');
 const Discord = require('discord.js');

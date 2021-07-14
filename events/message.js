@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 module.exports = (client, receivedMessage) => {
+
+    const helpF = require("./botJS/lib/helpFunctions.js")
     const {
         TEST_SERVER
     } = require("../util/BOTtaerUtil.js");
@@ -17,9 +19,11 @@ module.exports = (client, receivedMessage) => {
         msgGuildId = receivedMessage.guild.id;
         guildConfig = client.guildConfigs.get(msgGuildId);
         if (!guildConfig) {
-            client.commands.get("setcurrentguilds").execute(receivedMessage, [], dbClient)
-            receivedMessage.reply("Please try again your guild wasn't in the list!");
-            return;
+            guildConfig = helpF.addGuildToDB(receivedMessage)
+            if (!guildConfig) {
+                receivedMessage.reply("Please try again your guild wasn't in the list!");
+                return;
+            }
         }
         präfix = guildConfig.prefix;
     }
