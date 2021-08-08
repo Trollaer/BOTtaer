@@ -1,4 +1,6 @@
 //*******Message Handling**********
+const ALIVE_CHECK_TIME = 1000 * 60 * 16 
+const ALIVE_TIMER = 1000 * 60 * 15
 const {
     DC_TOKEN, DATABASE_URL, TEST_SERVER
 } = require("./util/BOTtaerUtil.js");
@@ -29,6 +31,7 @@ client.commands = new Discord.Collection();
 client.musicQueue = new Discord.Collection(); // {playing,songs,connection,loop,volume}
 client.cooldowns = new Discord.Collection();
 client.MCstatus = new Map();
+client.serverHosts = new Map();
 client.MCserverstatus = [];
 //const prefix = "$";
 const helpF = require("./botJS/lib/helpFunctions.js")
@@ -76,10 +79,50 @@ async function initGuildConfigs() {
         return console.log("Init went wrong!\n" + error);
     }
 }
-//soundboar server
+initServerHosts()
+async function initServerHosts() {
+    try {
+        dbClient.query("UPDATE hosts SET online = $1", [true], async function (dbErrorU, dbResponseU) {
+            if (dbErrorU) {
+                console.log(dbErrorU);
+                return;
+            }
+            dbClient.query("SELECT host_name, online FROM hosts", async function (dbError, dbResponse) {
+                if (dbError) {
+                    console.log(dbError);
+                    return;
+                }
+                else {
+                    dbResponse.rows.forEach(r => {
+                        client.serverHosts.set(r.host_name, {
+                            hostname: r.host_name
+                            , status: r.online
+                            , lastAlivePing: Date.now()
+                        })
+                    })
+                    client.serverHosts.forEach(h => {
+                        h.timerID = setInterval(function () {
+                            var currentTime = Date.now()
+                            if ((currentTime - ALIVE_CHECK_TIME) > h.lastAlivePing) {
+                                updateHostStatus(h.hostname, "offline");
+                                clearInterval(h.timerID)
+                                h.timerID = null;
+                            }
+                        }, ALIVE_TIMER);
+                    })
+                }
+            });
+        })
+    }
+    catch (error) {
+        return console.log("Host Init went wrong!\n" + error);
+    }
+}
+//********** soundboar server *******************/
 var express = require("express");
 var bodyParser = require("body-parser");
 var session = require("express-session");
+const { hostname } = require("os");
 var urlencodedParser = bodyParser.urlencoded({
     extended: false
 });
@@ -92,31 +135,8 @@ app.get("/", function (req, res) {
     //console.log(clientS);
     res.render("layout")
 });
-var lastAlive;
-var timerID;
-app.get("/imStillAlive/:server", function (req, res) {
-    console.log("ALIVE")
-    if (!lastAlive) {
-        timerID = setInterval(function () {
-            var currentTime = Date.now()
-            if ((currentTime - 1000 * 60 * 16) < lastAlive) {
-                return;
-            } else if (lastAlive) {
-                allServerStatusUpdate("offline");
-                console.log("DEAD")
-                lastAlive = null;
-                clearInterval(timerID)
-            }
-        }, 1000 * 60 * 15);
-    }
-    lastAlive = Date.now()
-    res.send("Alive")
-});
 
-
-// alle 15 mins schauen ob current time - 16 mins > lasttime
-
-app.get("/soundboard/:guildID", function (req, res) { // error Msg und nur einmal render
+app.get("/soundboard/:guildID", function (req, res) {
     var guildD = client.guilds.cache.get(req.params.guildID);
     if (!guildD) {
         res.render("soundboard", {
@@ -222,96 +242,168 @@ app.get("/ping", function (req, res) {
     //console.log(clientS);
     res.send("pong");
 });
-//****************************
-//this paths are for my Minecraft server only (maybe i will expend it but for now it will send a MSG into a specific channel from my friends server)
-app.get("/minecraftServerStatusUpdate/:servername/:status", function (req, res) {
-    var servername = req.params.servername;
-    var status = req.params.status;
-    notifyMCserverStatusOneServer(servername, status);
-    res.send(servername + " is now " + status)
-});
-async function notifyMCserverStatusOneServer(servername, status) {
-    var msgEmbed = {
-        color: status === "online" ? "#0CFA08" : "#FF0101"
-        , title: "The Minecraft-Sever: `" + servername + "` is currently **" + status.toUpperCase() + "!**"
+//************* Server hosting **********/
+app.get("/imStillAlive/:hostname", function (req, res) {
+    // hostname erst schauen ob in der liste wenn nicht DB anfrage (erg) dann hinzufügen, (sonst) nicht
+    // beim hoch fahren alles hosts auf online die in DB + liste hinzufügen dann schauen ob ping
+    //console.log("ALIVE")
+    var hostname = req.params.hostname;
+    var host = client.serverHosts.get(hostname)
+    if (!host) {
+        res.status(300).send("No host with name: ")
+        return
     }
-    dbClient.query("SELECT mnl.mcservername AS mcservername, guildid, channelid, msgid, address, port, modpack FROM mcservernotifylist mnl JOIN mcserverlist sl ON sl.mcservername = mnl.mcservername WHERE sl.mcservername = $1", [servername], function (dbErrorSelect, dbResponseSelect) {
+    if (!host.timerID) {
+        updateHostStatus(hostname, "online", res);
+        host.timerID = setInterval(function () {
+            var currentTime = Date.now()
+            if ((currentTime - ALIVE_CHECK_TIME) > host.lastAlivePing) {
+                updateHostStatus(hostname, "offline", res);
+                clearInterval(host.timerID)
+                host.timerID = null;
+            }
+        }, ALIVE_TIMER);
+    }
+    host.lastAlivePing = Date.now()
+    res.send("Alive")
+});
+app.get("/updateHostStatus/:hostname/:status", function (req, res) {
+    var hostname = req.params.hostname;
+    var status = req.params.status === "online" ? "online" : "offline";
+    var host = client.serverHosts.get(hostname)
+    if (!host) {
+        res.status(300).send({ error: "No host with name: " + hostname })
+        return
+    }
+    res.send("Updating Host-Status")
+    updateHostStatus(hostname, status, res);
+});
+app.get("/updateServerStatus/:servername/:status", function (req, res) {
+    //when online check if host is online
+    var servername = req.params.servername;
+    var status = req.params.status === "online" ? "online" : "offline";
+    dbClient.query("SELECT ip, port, server_name, game, game_version, mods, online FROM hosted_servers WHERE server_name = $1", [servername], function (dbErrorSelect, dbResponseSelect) {
         if (dbErrorSelect) {
+            if (res) res.send("ERROR while loading " + servername)
             return console.log("ERROR while loading " + servername);
         }
+        setServer(status, servername)
         if (dbResponseSelect.rows.length == 0) {
-            return console.log("No server to notify for " + servername);
+            if (res) res.send("No server found for: " + servername)
+            return console.log("No server found for: " + servername);
         }
-        var msgD = `It runs on \`${dbResponseSelect.rows[0].address}:${dbResponseSelect.rows[0].port}\``;
-        if (dbResponseSelect.rows[0].modpack) {
-            msgD += " with the modpack: " + dbResponseSelect.rows[0].modpack;
+        if (res) res.send("Server: " + servername + " is now " + status)
+        updateServerStatus(dbResponseSelect.rows[0].ip, dbResponseSelect.rows[0].port, dbResponseSelect.rows[0].server_name, dbResponseSelect.rows[0].game, dbResponseSelect.rows[0].game_version, dbResponseSelect.rows[0].mods, status)
+
+    });
+})
+async function updateHostStatus(hostname, status) {
+    if (status === "online") {
+        setHost(status, hostname)
+    } else {
+        dbClient.query("SELECT h.ipadress AS ip, port, server_name, game, game_version, mods, h.online FROM hosts h JOIN hosted_servers hs ON h.ipadress = hs.ip WHERE h.host_name = $1 AND hs.online = true", [hostname], function (dbErrorSelect, dbResponseSelect) {
+            if (dbErrorSelect) {
+                return console.log("ERROR while loading " + hostname);
+            }
+            setHost(status, hostname)
+            if (dbResponseSelect.rows.length == 0) {
+                return console.log("No running servers on host: " + hostname);
+            }
+            dbResponseSelect.rows.forEach(r => {
+                updateServerStatus(r.ip, r.port, r.server_name, r.game, r.game_version, r.mods, status)
+            })
+
+        })
+    }
+}
+function setHost(status, hostname) {
+    dbClient.query("UPDATE hosts SET online = $1 WHERE host_name = $2", [status == "online" ? true : false, hostname], function (dbErrorUpdate, dbResponseUpdate) {
+        if (dbErrorUpdate) {
+            return console.log("ERROR while updating " + hostname);
         }
-        msgEmbed.description = msgD;
+    })
+}
+async function updateServerStatus(ipR, portR, server_nameR, gameR, game_versionR, modsR, statusR) {
+    setServer(statusR, server_nameR);
+    var version_mods_text = "";
+    if (game_versionR) version_mods_text += `(**${gameR}** [${game_versionR}])`
+    if (modsR) version_mods_text += `with mod/s ${modsR}`
+    var msgEmbed = {
+        color: statusR === "online" ? "#0CFA08" : "#FF0101"
+        , title: `The ${gameR}-Sever: \`${server_nameR}\` is currently **${statusR.toUpperCase()}!**`
+        , description: `It runs on \`${ipR}:${portR}\` ${version_mods_text}.`
+    }
+    dbClient.query("SELECT guildid, channelid, msgid FROM notifylist WHERE server_name = $1", [server_nameR], function (dbErrorSelect, dbResponseSelect) {
+        if (dbErrorSelect) {
+            return console.log("ERROR while loading " + server_nameR);
+        }
+        if (dbResponseSelect.rows.length == 0) {
+            return console.log("No channels to notify for: " + server_nameR);
+        }
+
         dbResponseSelect.rows.forEach(async function (r) {
             var msgID = r.msgid;
             var channelID = r.channelid;
             var guildID = r.guildid;
             var guild = client.guilds.cache.get(guildID);
             if (!guild) {
-                //res.send("*****NO GUILD***** " + status);
                 console.log("NO Guild found for : " + guildID);
                 return;
             }
             var channel = guild.channels.cache.get(channelID);
             if (!channel) {
-                //res.send("*****NO CHANNEL***** " + status);
                 console.log("NO Channel found for : " + guild.name + " with " + channelID);
                 return;
             }
-            //console.log(client.MCstatus)
-
-            //console.log("Test : " + guild.name + " in " + channel.name + " with " + msgID);
             if (msgID) {
-                //console.log("DELETE")
-                
-                console.log(channel.messages.cache);
-                var MCmsg = await channel.messages.fetch(msgID).catch(console.error);;
-                if (MCmsg) {
-                    //console.log("MSG FOUND")
-                    //console.log(MCmsg)
-                    MCmsg.delete().catch(console.error);
+                //console.log(channel.messages.cache);
+                var Smsg = await channel.messages.fetch(msgID).catch("Smsg ERROR");;
+                if (Smsg) {
+                    Smsg.delete().catch("Smsg ERROR 2");
                 }
             }
             channel.send({
                 embed: msgEmbed
             }).then(mssg => {
-                dbClient.query("INSERT INTO mcservernotifylist (mcservername, guildid ,channelid, msgid) VALUES($1,$2,$3,$4) ON CONFLICT (mcservername, guildid) DO UPDATE SET channelid = $3 , msgid = $4", [servername, guildID, channelID, mssg.id], function (dbErrorInsert, dbResponseInsert) {
+                dbClient.query("INSERT INTO notifylist (server_name, guildid ,channelid, msgid) VALUES($1,$2,$3,$4) ON CONFLICT (server_name, guildid) DO UPDATE SET channelid = $3 , msgid = $4", [server_nameR, guildID, channelID, mssg.id], function (dbErrorInsert, dbResponseInsert) {
                     if (dbErrorInsert) {
                         console.log(dbErrorInsert);
                         return;
                     }
                 })
-            }).catch(console.err);
+            }).catch("Unkown Message");
+
         })
+
     })
 }
-app.get("/minecraftServerStatusUpdateAll/:status", async function (req, res) {
-    var status = req.params.status;
-    allServerStatusUpdate(status)
-    res.send("All servers " + status)
-
-});
-async function allServerStatusUpdate(status) {
-    dbClient.query("SELECT mcservername FROM mcserverlist", function (dbErrorSelect, dbResponseSelect) {
-        if (dbErrorSelect) {
-            return console.log("ERROR select all servers")
+function setServer(status, servername) {
+    dbClient.query("UPDATE hosted_servers SET online = $1 WHERE server_name = $2", [status == "online" ? true : false, servername], function (dbErrorUpdate, dbResponseUpdate) {
+        if (dbErrorUpdate) {
+            res.send("ERROR while updating " + servername)
+            return console.log("ERROR while updating " + servername);
         }
-        dbResponseSelect.rows.forEach(r => {
-            notifyMCserverStatusOneServer(r.mcservername, status)
-        });
     })
-
 }
-
-//**********************test server "824006072314495016") //  test : channel "831162371753902151") //
 app.listen(PORT, function () {
     console.log(`Web Server for BÖT on port ${PORT}`);
 });
 client.login(DC_TOKEN);
-///for Web GUI
-//*****************************
+/* Testen wenn in RGB
+var ping = require('web-pingjs')
+setInterval(() => checkServer("squad-server.ddns.net"), 6000)
+function checkServer(url) {
+    var http = require("http");
+    http.get({ host: url }, function (res) {
+        if (res.statusCode == 200) console.log("Running")
+        else console.log("Down")
+    })
+}
+
+function checkServer(url) {
+    ping(url).then(function (delta) {
+        console.log('Ping time was ' + String(delta) + ' ms');
+    }).catch(function (err) {
+        console.error('Could not ping remote URL', err);
+    });
+} */

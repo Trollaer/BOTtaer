@@ -164,11 +164,7 @@ exports.sendMsgWithDeleteAfter = function (channel, msg, time, options) {
                         attachment = new Discord.MessageAttachment(("./resources/icons/" + options.thumbnail), options.thumbnail);
                     }
                     embed.files = [attachment];
-                } //add other stuff
-                embed = {
-                    color: options.color ? options.color : "#82fa9e"
-                    , description: msg
-                }
+                } 
             };
             channel.send({
                 embed: embed

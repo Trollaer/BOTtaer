@@ -2,7 +2,13 @@
 
 ### BÖT
 [prio0]
+Server Commands: *serverHosting
+- new Host /delete host             (evtl mit password?) bzw dem der in hinzufügt einen code schicken zum wieder löschen
+- add/remove server to/from host      (^^ )      vllt online durch string(online,offline,old) wobei old == nicht mehr in gebrauch bzw einfach drinnen lassen
+- add/remove to notify list
+- list server (nach hosts sortiert)
 
+- !!!!! Alive Ping testen
 
 
 status Guilds/Channels/lasMSGs in DB (INSERT INTO ... ON DUPLICATE KEY UPDATE

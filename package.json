@@ -30,6 +30,7 @@
         "express-session": "^1.17.1",
         "ffmpeg": "^0.0.4",
         "ffmpeg-static": "^4.2.8",
+        "http": "^0.0.1-security",
         "net-ping": "^1.2.3",
         "pg": "^8.5.1",
         "ping": "^0.4.1",
@@ -37,6 +38,7 @@
         "request": "^2.88.2",
         "simple-youtube-api": "^5.2.1",
         "tcp-ping": "^0.1.1",
+        "web-pingjs": "^1.0.1",
         "ytdl-core": "^4.5.0",
         "ytdl-core-discord": "^1.2.5"
     }
