@@ -79,7 +79,7 @@ async function initGuildConfigs() {
         return console.log("Init went wrong!\n" + error);
     }
 }
-initServerHosts()
+if (!TEST_SERVER) {initServerHosts()}
 async function initServerHosts() {
     try {
         dbClient.query("UPDATE hosts SET online = $1", [true], async function (dbErrorU, dbResponseU) {

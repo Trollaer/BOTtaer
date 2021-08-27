@@ -1,48 +1,71 @@
-//list
-//remove
+const helpF = require("../../botJS/lib/helpFunctions");
 module.exports = {
     name: 'addhost'
     , aliases: []
-    , description: "Add Host"
+    , description: "Add a host where you want to host servers from.\nRun this script on your server while it's online. (https://github.com/Trollaer/BOTtaer/blob/main/SCRIPTS/pingAlive.bat)"
     , cType: "Server Hosting"
     , cooldown: 5
     , args: true
-    , usage: "<server name>"
+    , usage: "<ip it runs on> <unique host_name (no spaces)> "
     , guildOnly: true
+    , argsWithUpper: true
     , permissions: "ADMINISTRATOR"
-    , async execute(receivedMessage, arguments) {
+    , async execute(receivedMessage, arguments) { /////////////////////////////// Discord tag speichern von dem nutzer auf diesen dann beim server hinzufügen achten
 
         //************************** client.serverhosts und DB hinzufügen */
-        const helpF = require("../../botJS/lib/helpFunctions");
-        if (arguments.length > 1) return receivedMessage.reply(this.usage);
-        var guildID = receivedMessage.guild.id;
-        var servername = arguments[0];
-        var channelID = receivedMessage.channel.id;
         const dbClient = receivedMessage.client.dbClient;
-        dbClient.query("SELECT * FROM mcserverlist WHERE mcservername = $1", [servername], function (dbErrorSelect, dbResponseSelect) {
-            if (dbErrorSelect || dbResponseSelect.rows > 1) {
-                return console.log("ERROR select server " + servername)
-            }
-            if (dbResponseSelect.rows.length == 0) {
-                return receivedMessage.reply("No server with this name.")
-            }
-            var msgT = `Status updates for \`${servername}\` will now be posted in this channel.`
-            var msgD = `It runs on \`${dbResponseSelect.rows[0].address}:${dbResponseSelect.rows[0].port}\``;
-            if (dbResponseSelect.rows[0].modpack) {
-                msgD += " with the modpack: " + dbResponseSelect.rows[0].modpack;
-            }
-            dbClient.query("INSERT INTO mcservernotifylist (mcservername, guildid ,channelid, msgid) VALUES($1,$2,$3,$4) ON CONFLICT (mcservername, guildid) DO UPDATE SET channelid = $3 , msgid = $4", [servername, guildID, channelID, null], function (dbErrorInsert, dbResponseInsert) {
+
+        const helpF = require("../../botJS/lib/helpFunctions");
+        if (arguments.length <= 1) return receivedMessage.reply(this.usage);
+        var new_ip = arguments[0];
+        var new_host_name = arguments[1];
+        var new_personinpower = receivedMessage.author.id;
+        console.log(new_ip, new_host_name, new_personinpower)
+        let cancel;
+        helpF.sendMsg(receivedMessage.channel, `Type '-confirm' to confirm!`, {
+            color: "#25e9d9"
+            , title: `Do you want to add the host \`${new_host_name}\` with IP: \`${new_ip}\``
+            , deleteAfter: 30000
+        });
+        await receivedMessage.channel.awaitMessages(m => (m.author.id === receivedMessage.author.id) && (m.content === "-confirm"), {
+            max: 1
+            , time: 20000
+            , errors: ["time"]
+        }).catch((err) => {
+            cancel = true;
+            return helpF.sendMsg(receivedMessage.channel, ":x: | Time's up!", {
+                color: "#f23636"
+                , deleteAfter: 10000
+            });
+        });
+        if (!cancel) {
+            dbClient.query("insert into hosts ( ipadress, host_name, personinpower, online) VALUES ($1,$2,$3,$4)", [new_ip, new_host_name, new_personinpower, true], function (dbErrorInsert, dbResponseInsert) {
                 if (dbErrorInsert) {
-                    console.log(dbErrorInsert);
-                    return;
+                    let errorMsg = "Unknown Error!";
+                    if (dbErrorInsert.code == 23505) {
+                        if (dbErrorInsert.constraint === 'hosts_host_name_key')
+                            errorMsg = ":x: | There is already a host with the name: `" + new_host_name+"`";
+                        else if (dbErrorInsert.constraint === 'hosts_pkey')
+                            errorMsg = ":x: | There is already a host running on IP: `" + new_ip +"`";
+                    }
+                    return helpF.sendMsg(receivedMessage.channel,"", {
+                        color: "#f23636"
+                        , title: errorMsg
+                        , deleteAfter: 10000
+                    });
                 }
-                helpF.sendMsg(receivedMessage.channel, msgD, {
-                    color: "#2456f2"
-                    , title: msgT
-                    , deleteAfter: 20000
+                helpF.sendMsg(receivedMessage.channel, `:white_check_mark: | Added host!`, {
+                    color: "#28e925"
+                    , deleteAfter: 10000
+                });
+                receivedMessage.client.serverHosts.set(new_host_name, {
+                    hostname: new_host_name
+                    , status: true
+                    , lastAlivePing: Date.now()
                 })
             })
-        })
+        }
+        ///////////////////in list + more infos         aus  id den user machen
         if (receivedMessage.deletable) {
             receivedMessage.delete().catch(console.error);
         }

@@ -15,6 +15,10 @@ Get böt for your server, [here](https://discord.com/api/oauth2/authorize?client
   * Load a backup via an ID. You can not just recreate the channels/roles but give everyone back his roles.
 * Want to join a channel command, which allows you to request to join a channel, that you can see but not join. The users in this channel can vote you in or not.
 * A soundboard that lets you play soundeffects via a browser tap. (Got some sounds to add? Join the discord!)
+* Server hosting with status updates in Discord:
+  * Add a IP where you are hosting servers on.
+  * Then add the servers to the host. (e.g. a Minecraft Server)
+  * Run the scripts on your host and get current status updates on the host or servers.
 * Some smaller commands like:
   * Team creation based on who's in you voice channel.
   * Moving all user to an other channel.

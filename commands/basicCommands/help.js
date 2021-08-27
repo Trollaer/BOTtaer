@@ -1,7 +1,7 @@
 module.exports = {
     name: 'help'
     , description: 'List all of the commands or info about a specific command.'
-    , aliases: ['commands', 'c', 'h']
+    , aliases: ['commands', 'c', 'h','böt','bottaer']
     , cType: "Basic"
     , usage: '[command_name]'
     , data: [{
@@ -59,7 +59,7 @@ module.exports = {
                 if (prefix !== "$") {
                     exampleEmbed.fields.push({
                         name: "⚠️ **The prefix for this server is:   ` " + prefix + " `**⚠️"
-                        , value: "(only '$help' works with '$')"
+                        , value: "(only '$böt' or '$bottaer' works with '$')"
                     })
                 }
             }
@@ -77,6 +77,9 @@ module.exports = {
             complete: exampleEmbed
             , deleteAfter: 30000
         });
+        if (message.deletable) {
+            message.delete().catch(console.error);
+        }
     }
     , init(client) {
         var data = client.commands.get("help").data;

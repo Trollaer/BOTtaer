@@ -6,7 +6,7 @@ module.exports = (client, receivedMessage) => {
     const {
         TEST_SERVER
     } = require("../util/BOTtaerUtil.js");
-    if (TEST_SERVER && !["185773278927781889", "293750296084086785"].includes(receivedMessage.author.id)) return;
+    if (TEST_SERVER && !["185773278927781889", "293750296084086785","435909006029094927"].includes(receivedMessage.author.id)) return;
     const dbClient = client.dbClient;
     if (receivedMessage.author.bot) return; // Prevent bot from responding to its own messages
     var cooldowns = client.cooldowns;
@@ -28,10 +28,10 @@ module.exports = (client, receivedMessage) => {
         }
         präfix = guildConfig.prefix;
     }
-    if (receivedMessage.content.startsWith(präfix) || receivedMessage.content.startsWith("$help")) {
-        let fullCommand = receivedMessage.content.substr(1).toLowerCase(); // Remove the leading exclamation mark
+    if (receivedMessage.content.startsWith(präfix) || receivedMessage.content.startsWith("$böt") || receivedMessage.content.startsWith("$bottaer")) {
+        let fullCommand = receivedMessage.content.substr(1); // Remove the leading exclamation mark
         let splitCommand = fullCommand.split(" ") // Split the message up in to pieces for each space
-        let commandName = splitCommand[0]; // The first word directly after the exclamation is the command
+        let commandName = splitCommand[0].toLowerCase(); // The first word directly after the exclamation is the command
         let arguments = splitCommand.slice(1);
         const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
         if (!command) {
@@ -105,6 +105,9 @@ function processCommand(receivedMessage, command, commandName, arguments) {
         }
     }
     //user is in voice channel
+    if(!command.argsWithUpper){
+        arguments=arguments.map(arg=>arg.toLowerCase())
+    }
     try {
         command.execute(receivedMessage, arguments);
     }

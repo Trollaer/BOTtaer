@@ -9,12 +9,13 @@ module.exports = {
     , args: true
     , usage: "<server_name>"
     , guildOnly: true
+    , argsWithUpper: true
     , permissions: "ADMINISTRATOR"
     , async execute(receivedMessage, arguments) {
         const dbClient = receivedMessage.client.dbClient;
         const helpF = require("../../botJS/lib/helpFunctions");
         var guildID = receivedMessage.guild.id;
-        var servername = arguments.join(" ");
+        var servername = arguments.join("");
         dbClient.query("SELECT guildid, channelid, msgid FROM notifylist WHERE server_name = $1", [servername], async function (dbErrorSelect, dbResponseSelect) {
             if (dbErrorSelect) {
                 return console.log("ERROR while loading " + servername);

@@ -17,6 +17,7 @@ const fs = require('fs');
 const backup = require("../../botJS/backupDC/backupmain.js");
 async function loadFn(receivedMessage, args) { //
     var dbClient = receivedMessage.client.dbClient;
+    let cancel;
     if (args[0] === 'reset') {
         receivedMessage.channel.send(":exclamation: Make sure that BOTtaer is the role at the top of the list. Otherwise it may not delete all roles.\n:warning: | The server will be reseted.\n All channels, roles etc. will be deleted. You can save a backup with '$backup'.\n Type `-confirm` to confirm!");
         await receivedMessage.channel.awaitMessages(m => (m.author.id === receivedMessage.author.id) && (m.content === "-confirm"), {
@@ -24,10 +25,11 @@ async function loadFn(receivedMessage, args) { //
             , time: 20000
             , errors: ["time"]
         }).catch((err) => {
+            cancel=true;
             // if the author of the commands does not confirm the backup loading
             return receivedMessage.channel.send(":x: | Time's up! Cancelled reset!");
         });
-        backup.reset(receivedMessage.guild, receivedMessage.author, false);
+        if(!cancel)backup.reset(receivedMessage.guild, receivedMessage.author, false);
     }
     else
     if (args[0] === "list") {
@@ -44,10 +46,11 @@ async function loadFn(receivedMessage, args) { //
             , time: 20000
             , errors: ["time"]
         }).catch((err) => {
+            cancel=true;
             // if the author of the commands does not confirm the backup loading
             return receivedMessage.channel.send(":x: | Time's up! Cancelled backup loading!");
         });
-        backup.loadRoles(receivedMessage.guild, receivedMessage.author, args[0], dbClient);
+        if(!cancel)backup.loadRoles(receivedMessage.guild, receivedMessage.author, args[0], dbClient);
     }
     else if (args[1] === "noreset") {
         receivedMessage.channel.send(":warning: | The server will not be reseted first. All channels/roles etc. get added and the others are keeped!\n Type `-confirm` to confirm!");
@@ -56,10 +59,11 @@ async function loadFn(receivedMessage, args) { //
             , time: 20000
             , errors: ["time"]
         }).catch((err) => {
+            cancel=true;
             // if the author of the commands does not confirm the backup loading
             return receivedMessage.channel.send(":x: | Time's up! Cancelled backup loading!");
         });
-        backup.loadServer(receivedMessage.guild, receivedMessage.author, args[0], receivedMessage.client, false);
+        if(!cancel)backup.loadServer(receivedMessage.guild, receivedMessage.author, args[0], receivedMessage.client, false);
     }
     else if (!args[1]) {
         receivedMessage.channel.send(":exclamation: Make sure that BOTtaer is the role at the top of the list. Otherwise it may not delete all roles.\n:warning: | The server will be reseted first. All channels/roles etc. get deleted and then recreated form the backup!\n Type `-confirm` to confirm!");
@@ -68,10 +72,11 @@ async function loadFn(receivedMessage, args) { //
             , time: 20000
             , errors: ["time"]
         }).catch((err) => {
+            cancel=true;
             // if the author of the commands does not confirm the backup loading
             return receivedMessage.channel.send(":x: | Time's up! Cancelled backup loading!");
         });
-        backup.loadServer(receivedMessage.guild, receivedMessage.author, args[0], receivedMessage.client, true);
+        if(!cancel)backup.loadServer(receivedMessage.guild, receivedMessage.author, args[0], receivedMessage.client, true);
     }
     else {
         receivedMessage.channel.send("Classic misstake you maybe copied the *space* when copying the backupID.\nOr type '$help loadbackup' for more infomation.")

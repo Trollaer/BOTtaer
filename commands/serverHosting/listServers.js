@@ -1,4 +1,3 @@
-
 const helpF = require("../../botJS/lib/helpFunctions");
 module.exports = {
     name: 'listservers'
@@ -10,6 +9,7 @@ module.exports = {
     , guildOnly: true
     , async execute(receivedMessage, arguments) {
         const dbClient = receivedMessage.client.dbClient;
+        const client =receivedMessage.client;
         var response = ""
         var hostMsg = ""
         dbClient.query("SELECT h.host_name, h.personinpower, h.online AS hostonline, hs.server_name, hs.game, hs.game_version, hs.mods, hs.online AS serveronline FROM hosts h JOIN hosted_servers hs ON h.ipadress = hs.ip GROUP BY  h.host_name, h.ipadress, hs.ip, hs.server_name ", async function (dbErrorSelect, dbResponseSelect) {
@@ -28,7 +28,11 @@ module.exports = {
                         if(curHost) response += "\n" + hostMsg +"```"
                     }
                     curHost = r.host_name
-                    hostMsg = `__***${r.host_name}*** by ${r.personinpower} (\`${r.hostonline ? "ONLINE" : "OFFLINE"}\`)__\`\`\`bash\n`
+                    let user = client.users.cache.get(r.personinpower)
+                    if(!user){
+                        user={tag:"Unknown"}
+                    }
+                    hostMsg = `__***${r.host_name}*** by '${user.tag}' (\`${r.hostonline ? "ONLINE" : "OFFLINE"}\`)__\`\`\`bash\n`
                 }
                 hostMsg += `\n+ "${r.server_name}" : ${r.game}:${r.game_version ? r.game_version : ""}: ${r.mods ? "with Mods" : "no Mods"} ("${r.serveronline ? "ONLINE" : "OFFLINE"}")`
             });

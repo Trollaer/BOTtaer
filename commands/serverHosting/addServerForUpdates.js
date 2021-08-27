@@ -9,6 +9,7 @@ module.exports = {
     , args: true
     , usage: "<server_name>"
     , guildOnly: true
+    , argsWithUpper: true
     , permissions: "ADMINISTRATOR"
     , async execute(receivedMessage, arguments) {
         const helpF = require("../../botJS/lib/helpFunctions");
