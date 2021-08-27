@@ -33,7 +33,7 @@ module.exports = {
         var version = game_and_version[1];
 
         let cancel;
-        console.log("Host: " + hostname + "\nServer: " + servername + "\nPort: " + port + "\nStatus: " + status + "\nGame: " + game + "\nVersion: " + version + "\nMods: " + mods);
+        //console.log("Host: " + hostname + "\nServer: " + servername + "\nPort: " + port + "\nStatus: " + status + "\nGame: " + game + "\nVersion: " + version + "\nMods: " + mods);
 
         helpF.sendMsg(receivedMessage.channel, `**Game: ** ${game} ${version ? "[" + version + "]" : ""}\n${mods ? `**Mods: ** ${mods}` : ""}\n**Currently:** \`${status}\`\n\nType '-confirm' to confirm!`, {
             color: "#25e9d9"
