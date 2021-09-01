@@ -12,6 +12,7 @@ module.exports = {
     , cooldown: 5
     , args: true
     , guildOnly: true
+    , cType: "Music"
     , needsVoiceChannel: true
     , async execute(message, args, fromPlay) {
         playlistF(message, args, fromPlay)
