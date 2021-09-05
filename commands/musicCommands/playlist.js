@@ -26,11 +26,11 @@ module.exports = {
                 url: "attachment://botmusicicon.png"
             }
             , timestamp: new Date()
+            , files
         };
         const Discord = require('discord.js');
         const attachment = new Discord.MessageAttachment('./resources/icons/botmusicicon.png', 'botmusicicon.png');
-        var exampleEmbed;
-        exampleEmbed.files = [
+        playlistEmbed.files = [
                                     attachment
                                         ]
         if (playlistEmbed.description.length >= 500) {
