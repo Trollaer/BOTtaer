@@ -10,10 +10,12 @@ module.exports = {
     , sameChannelLikeBot: true
     , execute(message, arguments) {
         const helpF = require("../../botJS/lib/helpFunctions.js");
+        console.log(message.client.musicQueue)
         const queue = message.client.musicQueue.get(message.guild.id);
         if (!queue) {
-            helpF.sendMsgWithDeleteAfter(queue.textChannel, "Not playing anything at the moment.", 2000);
+            helpF.sendMsgWithDeleteAfter(message.channel, "Not playing anything at the moment.", 2000);
         }
+        console.log(queue)
         var songsText = "";
         queue.songs.slice(10, queue.songs.length).forEach((song, index) => {
             songsText += `${index + 1}. ${song.title}\n`
