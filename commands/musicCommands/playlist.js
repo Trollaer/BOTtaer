@@ -26,7 +26,7 @@ module.exports = {
                 url: "attachment://botmusicicon.png"
             }
             , timestamp: new Date()
-            , files
+            , files: []
         };
         const Discord = require('discord.js');
         const attachment = new Discord.MessageAttachment('./resources/icons/botmusicicon.png', 'botmusicicon.png');
