@@ -1,6 +1,7 @@
 //https://discordjs.guide/additional-info/changes-in-v13.html#client
 
 //*******Message Handling**********
+console.log(process.version)
 const ALIVE_CHECK_TIME = 1000 * 60 * 16
 const ALIVE_TIMER = 1000 * 60 * 15
 const {
