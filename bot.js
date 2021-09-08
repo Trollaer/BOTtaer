@@ -31,9 +31,7 @@ client.guildConfigs = new Discord.Collection(); //{guildID[key],prefix,DJrole,bu
 client.commands = new Discord.Collection();
 client.musicQueue = new Discord.Collection(); // {playing,songs,connection,loop,volume}
 client.cooldowns = new Discord.Collection();
-client.MCstatus = new Map();
 client.serverHosts = new Map();
-client.MCserverstatus = [];
 //const prefix = "$";
 const helpF = require("./botJS/lib/helpFunctions.js")
 //commands einlesen
@@ -208,7 +206,7 @@ app.get("/soundboardAPI/requestPlay/:guildID/:folder/:file", function (req, res)
                 errorMSG += "No guild found!\n";
             }
             else {
-                if (!guild.me.voice.channelID) {
+                if (!guild.me.voice.channelId) {
                     errorMSG += "Not in a channel!\n"
                 }
                 if (!guild.me.voice.connection) {

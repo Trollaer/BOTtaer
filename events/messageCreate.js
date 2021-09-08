@@ -99,7 +99,7 @@ function processCommand(receivedMessage, command, commandName, arguments) {
             receivedMessage.channel.send("You must be in a voice channel for this command.");
             return;
         }
-        else if (command.sameChannelLikeBot && channel.id !== receivedMessage.guild.me.voice.channelID) {
+        else if (command.sameChannelLikeBot && channel.id !== receivedMessage.guild.me.voice.channelId) {
             receivedMessage.channel.send("You need to be in the same channel as böt.");
             return;
         }

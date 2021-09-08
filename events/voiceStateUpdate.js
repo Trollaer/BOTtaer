@@ -9,8 +9,8 @@ module.exports = (client, oldState, newState) => {
     var voiceState = newState.guild.me.voice;
     var guildID = newState.guild.id;
     setTimeout(function () {
-        //console.log(client.guilds.cache.get(newState.guild.id).me.voice.channelID)
-        if (client.guilds.cache.get(newState.guild.id).me.voice.channelID) return
+        //console.log(client.guilds.cache.get(newState.guild.id).me.voice.channelId)
+        if (client.guilds.cache.get(newState.guild.id).me.voice.channelId) return
         client.musicQueue.delete(guildID);
         var conf = client.guildConfigs.get(guildID);
         if (conf) {

@@ -27,7 +27,7 @@ async function playF(receivedMessage, args) {
     var channelToJoin = receivedMessage.member.voice.channel;
     var serverQueue = client.musicQueue.get(receivedMessage.guild.id);
     //aus args song herausfinden https://github.com/eritislami/evobot/blob/master/commands/play.js
-    if (channelToJoin.id !== guild.me.voice.channelID && helpF.checkBusy(receivedMessage.client, receivedMessage.guild.id)) { //&& !(monitoring || playing[done])
+    if (channelToJoin.id !== guild.me.voice.channelId && helpF.checkBusy(receivedMessage.client, receivedMessage.guild.id)) { //&& !(monitoring || playing[done])
         helpF.sendMsgWithDeleteAfter(receivedMessage.channel, ("Not in the same channel as böt, who is doing something else. (already playing music or monitoring)"), 20000, {
             embed: true
             , color: "0xFF0000"

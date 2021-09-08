@@ -215,7 +215,7 @@ exports.shuffle = function (array) {
 exports.joinIn = function (message) {
         if (message) {
             joinVoiceChannel({
-                channelId: message.member.voice.channel.id,
+                channelId: message.member.voice.channelId,
                 guildId: message.guild.id,
                 adapterCreator: message.guild.voiceAdapterCreator
             })
