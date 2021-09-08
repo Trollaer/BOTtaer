@@ -5,6 +5,9 @@
         "url": "https://github.com/Trollaer"
     },
     "version": "4.0.3",
+    "engines": {
+        "node": "16.6"
+      },
     "description": "A multi functional Discord bot.",
     "keywords": [
         "discord.js",
