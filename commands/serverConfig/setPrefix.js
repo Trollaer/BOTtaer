@@ -45,7 +45,7 @@ module.exports = {
                                     attachment
                                         ]
                 receivedMessage.channel.send("@everyone", {
-                    embed: exampleEmbed
+                    embeds: [exampleEmbed]
                 });
             }
         });

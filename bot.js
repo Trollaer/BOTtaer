@@ -1,5 +1,7 @@
+//https://discordjs.guide/additional-info/changes-in-v13.html#client
+
 //*******Message Handling**********
-const ALIVE_CHECK_TIME = 1000 * 60 * 16 
+const ALIVE_CHECK_TIME = 1000 * 60 * 16
 const ALIVE_TIMER = 1000 * 60 * 15
 const {
     DC_TOKEN, DATABASE_URL, TEST_SERVER
@@ -21,9 +23,7 @@ var dbClient = new pg.Client({
 });
 dbClient.connect();
 const client = new Discord.Client({
-    ws: {
-        intents: new Discord.Intents(Discord.Intents.ALL)
-    }
+    intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "GUILD_MESSAGE_REACTIONS", "DIRECT_MESSAGES", "GUILD_VOICE_STATES", "GUILD_BANS","GUILD_EMOJIS_AND_STICKERS","GUILD_INTEGRATIONS","GUILD_WEBHOOKS","GUILD_INVITES"]
 });
 client.dbClient = dbClient;
 client.guildConfigs = new Discord.Collection(); //{guildID[key],prefix,DJrole,busy[true,wenn music oder monitoring], monitoringAll { start time, users[],currentlyMonitoring},monitoringUsers}
@@ -79,7 +79,7 @@ async function initGuildConfigs() {
         return console.log("Init went wrong!\n" + error);
     }
 }
-if (!TEST_SERVER) {initServerHosts()}
+if (!TEST_SERVER) { initServerHosts() }
 async function initServerHosts() {
     try {
         dbClient.query("UPDATE hosts SET online = $1", [true], async function (dbErrorU, dbResponseU) {
@@ -363,7 +363,7 @@ async function updateServerStatus(ipR, portR, server_nameR, gameR, game_versionR
                 }
             }
             channel.send({
-                embed: msgEmbed
+                embeds: [msgEmbed]
             }).then(mssg => {
                 dbClient.query("INSERT INTO notifylist (server_name, guildid ,channelid, msgid) VALUES($1,$2,$3,$4) ON CONFLICT (server_name, guildid) DO UPDATE SET channelid = $3 , msgid = $4", [server_nameR, guildID, channelID, mssg.id], function (dbErrorInsert, dbResponseInsert) {
                     if (dbErrorInsert) {

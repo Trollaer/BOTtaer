@@ -12,7 +12,8 @@ module.exports = {
         var conf = receivedMessage.client.guildConfigs.get(guild.id)
         if (!conf) return receivedMessage.reply("Error conf")
         var returnMsg = "\n**Prefix:** '" + conf.prefix + "'";
-        returnMsg += "\n**Owner: ** " + guild.owner.user.username;
+        //guild.fetchOwner().then(console.log)
+        //returnMsg += "\n**Owner: ** " + guild.fetchOwner().user.username;
         var cDate = Date(guild.createdTimestamp + 3600).toString()
         cDate = cDate.split(" GMT");
         returnMsg += "\n**Creation Date: ** " + cDate[0];
@@ -23,13 +24,13 @@ module.exports = {
         var textCount = 0;
         var totalCount = 0;
         guild.channels.cache.forEach(c => {
-            if (c.type === "text") {
+            if (c.type === "GUILD_TEXT") {
                 textCount++;
             }
-            else if (c.type === "category") {
+            else if (c.type === "GUILD_CATEGORY") {
                 catCount++;
             }
-            else if (c.type === "voice") {
+            else if (c.type === "GUILD_VOICE") {
                 voiceCount++;
             }
             totalCount++;
@@ -38,7 +39,7 @@ module.exports = {
         if (guild.afkChannel) {
             returnMsg += "\n**AFK channel: ** " + guild.afkChannel.name;
         }
-        returnMsg += "\n**Roles count: ** " + guild.roles.cache.array().length;
+        returnMsg += "\n**Roles count: ** " + guild.roles.cache.values().length;
         if (conf.DJrole) {
             var dj = guild.roles.cache.get(conf.DJrole)
             if (dj) returnMsg += "\n**DJ-role: ** <@&" + conf.DJrole + ">";

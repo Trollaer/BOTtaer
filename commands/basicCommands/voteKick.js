@@ -44,7 +44,7 @@ module.exports = {
             else {
                 usersInChannelNoCams.basic.push(member.user.id);
                 usersInChannelNoCams.names.push(member.toString());
-                if (member.hasPermission("ADMINISTRATOR")) {
+                if (member.permissions.has("ADMINISTRATOR")) {
                     usersInChannelNoCams.admins.push(member.user.id);
                 }
             }
@@ -137,7 +137,7 @@ async function startvote(msg, userInC, kickFrom, kickThis, kickTime) {
 }
 
 function revokeViewRightsFor(memberOruser, channel, time) {
-    channel.updateOverwrite(memberOruser, {
+    channel.permissionOverwrites.edit(memberOruser, {
         VIEW_CHANNEL: false
     });
     setTimeout(function () {

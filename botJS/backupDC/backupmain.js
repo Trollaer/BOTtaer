@@ -28,7 +28,7 @@ async function create(guild, author, dbClient) {
         , description: "Backup and Rolebackup for '" + gN + "' successful with backupID: `" + backupID + "`"
     };
     author.send({
-        embed: embed
+        embeds: [embed]
     });
 }
 //***************LOAD*********************
@@ -54,13 +54,13 @@ async function loadServer(guild, author, backupID, client, resetBol) {
             var cDate = "" + dbResponse.rows[0].creationdate;
             cDate = cDate.split(" GMT");
             author.send({
-                embed: {
+                embeds: [{
                     color: "#09fc81"
                     , title: "The backup with the backupID: `" + backupID + "` is getting loaded."
                     , description: "It was created on " + cDate[0] + ".\n If you see channels, that shouln't be there (you can't join or write in them), these are just visual bugs from Discord. To fix them, just quit Discord. Not just close it but quit.", footer:{
                         text:"It takes at least 30 seconds to load."
                     }
-                }
+                }]
             });
             if (resetBol) {
                 await reset(guild, author, true);
@@ -84,12 +84,12 @@ async function loadRoles(guild, author, backupID, dbClient) {
             var cDate = "" + dbResponse.rows[0].creationdate;
             cDate = cDate.split(" GMT");
             author.send({
-                embed: {
+                embeds: [{
                     color: "#09fc81"
                     , title: "The roles from the backup with the backupID: `" + backupID + "` are getting loaded."
                     , description: "It was created on " + cDate[0] + "."
                     
-                }
+                }]
             });
             //log Data
             await loadMaster.loadRoles(guild, dbResponse.rows[0].data);
@@ -139,7 +139,7 @@ async function reset(guild, author, loadBol) {
             await wh.delete();
         });
     });
-    var bans = await guild.fetchBans().then(async function (banned) {
+    var bans = await guild.bans.fetch().then(async function (banned) {
         await banned.map(async function (ban) {
             await guild.members.unban(ban.user);
         });
@@ -182,7 +182,7 @@ async function deleteChannels(guild) {
 }
 async function deleteAllChannels(guild) {
     await guild.channels.cache.filter(async function (ch) {
-        return ch.type !== 'category';
+        return ch.type !== 'GUILD_CATEGORY';
     }).forEach(async function (channel) {
         try {
             await channel.delete().catch(function () {});;
@@ -194,7 +194,7 @@ async function deleteAllChannels(guild) {
 }
 async function deleteAllCategories(guild) {
     await guild.channels.cache.filter(function (ch) {
-        return ch.type === 'category';
+        return ch.type === 'GUILD_CATEGORY';
     }).forEach(async function (cat) {
         try {
             await cat.delete().catch(function () {});;

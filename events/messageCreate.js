@@ -86,7 +86,7 @@ function processCommand(receivedMessage, command, commandName, arguments) {
     // evtl https://discordjs.guide/command-handling/adding-features.html#cooldowns
     //permissions
     if (command.permissions) {
-        if (receivedMessage.channel.type !== "dm") {
+        if (receivedMessage.channel.type !== "DM") {
             const authorPerms = receivedMessage.channel.permissionsFor(receivedMessage.author);
             if (!authorPerms || !authorPerms.has(command.permissions)) {
                 return receivedMessage.reply('You do not have the permission \'' + command.permissions + '\'');

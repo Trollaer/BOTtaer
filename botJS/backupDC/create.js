@@ -70,7 +70,7 @@ function getRoles(guild) {
     roles = [];
     var roleArray = guild.roles.cache.sort(function (a, b) {
         return b.position - a.position;
-    }).array();
+    }).values();
     roleArray.forEach(function (role) {
         if (role.name !== "BOTtaer") {
             var roleData = {
@@ -135,17 +135,17 @@ function fetchChannelPermissions(channel) {
 }
 
 function fetchTextChannelData(channel) {
-    var channelData, messageCount, fetchOptions, lastMessageId, fetchComplete, fetched, _a;
+    var channelData, messageCount, fetchComplete, fetched;
     channelData = {
         type: 'text'
         , name: channel.name
-        , nsfw: channel.nsfw
-        , rateLimitPerUser: channel.type === 'text' ? channel.rateLimitPerUser : undefined
+        , nsfwLevel: channel.nsfwLevel
+        , rateLimitPerUser: channel.type === 'GUILD_TEXT' ? channel.rateLimitPerUser : undefined
         , parent: channel.parent ? channel.parent.name : null
         , topic: channel.topic
         , permissions: fetchChannelPermissions(channel)
         , messages: []
-        , isNews: channel.type === 'news'
+        , isNews: channel.type === 'GUILD_NEWS'
     };
     fetched = channel.messages.fetch({
         limit: 10
@@ -193,8 +193,8 @@ function getChannels(guild) {
     };
     //alle categories
     categories = guild.channels.cache.filter(function (ch) {
-        return ch.type === 'category';
-    }).array();
+        return ch.type === 'GUILD_CATEGORY';
+    }).values();
     categories.forEach(cat => {
         categoryData = {
             name: cat.name
@@ -203,9 +203,9 @@ function getChannels(guild) {
         };
         children = cat.children.sort(function (a, b) {
             return a.position - b.position;
-        }).array();
+        }).values();
         children.forEach(child => {
-            if ((child.type === 'text' || child.type === 'news')) {
+            if ((child.type === 'GUILD_TEXT' || child.type === 'GUILD_NEWS')) {
                 categoryData.children.push(fetchTextChannelData(child));
             }
             else if (child.type === 'voice') {
@@ -215,15 +215,15 @@ function getChannels(guild) {
         channels.categories.push(categoryData);
     });
     others = guild.channels.cache.filter(function (ch) {
-        return !ch.parent && ch.type !== 'category';
+        return !ch.parent && ch.type !== 'GUILD_CATEGORY';
     }).sort(function (a, b) {
         return a.position - b.position;
-    }).array();
+    }).values();
     others.forEach(o => {
-        if ((o.type === 'text' || o.type === 'news')) {
+        if ((o.type === 'GUILD_TEXT' || o.type === 'GUILD_NEWS')) {
             channels.others.push(fetchTextChannelData(o));
         }
-        else if (o.type === 'voice') {
+        else if (o.type === 'GUILD_VOICE') {
             channels.others.push(fetchVoiceChannelData(o));
         }
     })

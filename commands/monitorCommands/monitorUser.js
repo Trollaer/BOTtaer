@@ -61,9 +61,9 @@ function addToMonitorList(receivedMessage, args, monitoredGuild) {
             monitoredGuild.monitoringUsers.set(user.id, memberData);
         }
     })
-    if (!receivedMessage.guild.me.voice.channelID || receivedMessage.member.hasPermission("ADMINISTRATOR") || !helpFkts.checkBusy(receivedMessage.client, receivedMessage.guild.id)) {
+    if (!receivedMessage.guild.me.voice.channelID || receivedMessage.member.permissions.has("ADMINISTRATOR") || !helpFkts.checkBusy(receivedMessage.client, receivedMessage.guild.id)) {
         //oder nicht beschäftigt;
-        if (helpFkts.joinIn(receivedMessage.member.voice.channel)) {
+        if (helpFkts.joinIn(receivedMessage)) {
             returnMsg.push("Joined your channel to monitor the user[s].\n")
         }
     }

@@ -1,4 +1,5 @@
 //evtl überladen
+const { joinVoiceChannel } = require('@discordjs/voice');
 exports.sendMsg = function (channel, msg_description, options) {
         if (!options) {
             if (typeof msg_description !== "string" && (msg_description.complete || msg_description.title)) {
@@ -54,9 +55,8 @@ exports.sendMsg = function (channel, msg_description, options) {
                 }
             }
         }
-        var ats = options.ats;
-        channel.send(ats, {
-            embed: embed
+        channel.send({
+            embeds: [embed]
         }).then(mssg => {
             if (options.deleteAfter) {
                 setTimeout(function () {
@@ -167,7 +167,7 @@ exports.sendMsgWithDeleteAfter = function (channel, msg, time, options) {
                 } 
             };
             channel.send({
-                embed: embed
+                embeds: [embed]
             }).then(mssg => {
                 if (time > 1) {
                     setTimeout(function () {
@@ -212,16 +212,13 @@ exports.shuffle = function (array) {
     }
     return array;
 }
-exports.joinIn = function (channel) {
-        if (channel) {
-            var conne = channel.join().then(connection => {
-                // Yay, it worked!
-                console.log("Successfully connected.");
-            }).catch(e => {
-                // Oh no, it errored! Let's log it to console :)
-                console.error(e);
-            });
-            return conne;
+exports.joinIn = function (message) {
+        if (message) {
+            joinVoiceChannel({
+                channelId: message.member.voice.channel.id,
+                guildId: message.guild.id,
+                adapterCreator: message.guild.voiceAdapterCreator
+            })
         }
     }
     //*************monitor user****************

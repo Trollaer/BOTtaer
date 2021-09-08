@@ -13,9 +13,9 @@ module.exports = {
 const helpF = require("../../botJS/lib/helpFunctions")
 
 function joinfn(receivedMessage, args) {
-    if (receivedMessage.member.hasPermission("ADMINISTRATOR") || !helpF.checkBusy(receivedMessage.client, receivedMessage.guild.id)) {
+    if (receivedMessage.member.permissions.has("ADMINISTRATOR") || !helpF.checkBusy(receivedMessage.client, receivedMessage.guild.id)) {
         var channelToJoin = receivedMessage.member.voice.channel;
-        helpF.joinIn(channelToJoin);
+        helpF.joinIn(receivedMessage);
     }
     else {
         receivedMessage.reply("Böt is busy doing something in an other channel.");

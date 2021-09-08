@@ -19,7 +19,7 @@ module.exports = {
         }
         //console.log(chanName);
         receivedMessage.guild.channels.cache.forEach(c => {
-                if (c.name.toLowerCase() === chanName && c.type === "voice") {
+                if (c.name.toLowerCase() === chanName && c.type === "GUILD_VOICE") {
                     wantToJoinChannel = c;
                 }
             })
@@ -28,7 +28,7 @@ module.exports = {
             receivedMessage.reply("Make sure you spelled the channel name right.");
             return;
         }
-        if (!wantToJoinChannel.type === "voice") {
+        if (!wantToJoinChannel.type === "GUILD_VOICE") {
             receivedMessage.reply("Only works for voice channels.");
             return;
         }
@@ -53,7 +53,7 @@ module.exports = {
             else {
                 usersInChannelNoCams.basic.push(member.user.id);
                 usersInChannelNoCams.names.push(member.toString());
-                if (member.hasPermission("MOVE_MEMBERS")) {
+                if (member.permissions.has("MOVE_MEMBERS")) {
                     usersInChannelNoCams.withPerms.push(member.user.id);
                 }
             }

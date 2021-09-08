@@ -1,8 +1,8 @@
 module.exports = (client) => {
     client.user.setPresence({
         status: 'online'
-        , activity: {
-            name: "'$help' to show all commmands."
+        , activities: {
+            name: ["'$help' to show all commmands."]
             , type: 'WATCHING'
         , }
     })

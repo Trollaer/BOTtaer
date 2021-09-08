@@ -20,7 +20,7 @@ module.exports = {
         }
         //console.log(chanName);
         receivedMessage.guild.channels.cache.forEach(c => {
-                if (c.name.toLowerCase() === chanName && c.type === "voice") {
+                if (c.name.toLowerCase() === chanName && c.type === "GUILD_VOICE") {
                     wantToJoinChannel = c;
                 }
             })
@@ -29,7 +29,7 @@ module.exports = {
             helpF.sendMsg(receivedMessage.channel,"Make sure you spelled the channel name right.");
             return;
         }
-        if (!wantToJoinChannel.type === "voice") {
+        if (!wantToJoinChannel.type === "GUILD_VOICE") {
             helpF.sendMsg(receivedMessage.channel,"Only works for voice channels.");
             return;
         }

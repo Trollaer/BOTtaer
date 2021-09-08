@@ -120,3 +120,7 @@ async function playF(receivedMessage, args) {
         receivedMessage.delete().catch(console.error);
     }
 }
+
+
+///https://www.npmjs.com/package/discord-music-player
+//https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiWzcqx_u_yAhUkS_EDHWP2ADYQwqsBegQIBhAB&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D3wJJDM7jUsk&usg=AOvVaw2EU73G4XDlcyb3ydRgpGPO

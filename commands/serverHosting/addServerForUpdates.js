@@ -40,7 +40,7 @@ module.exports = {
                 , description: `${msgD}.`
             }
             receivedMessage.channel.send({
-                embed: msgEmbed
+                embeds: [msgEmbed]
             }).then(mssg => {
                 dbClient.query("INSERT INTO notifylist (server_name, guildid ,channelid, msgid) VALUES($1,$2,$3,$4) ON CONFLICT (server_name, guildid) DO UPDATE SET channelid = $3 , msgid = $4", [servername, guildID, channelID, mssg.id], function (dbErrorInsert, dbResponseInsert) {
                     if (dbErrorInsert) {

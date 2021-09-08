@@ -77,8 +77,8 @@ const helpF = require("../../botJS/lib/helpFunctions");
 function startMonitoring(receivedMessage, monitorData) {
     //console.log(receivedMessage.mentions.users)
     var returnMsg = [];
-    if (!receivedMessage.guild.me.voice.channelID || receivedMessage.member.hasPermission("ADMINISTRATOR") || !helpF.checkBusy(receivedMessage.client, receivedMessage.guild.id)) {
-        if (helpF.joinIn(receivedMessage.member.voice.channel)) {
+    if (!receivedMessage.guild.me.voice.channelID || receivedMessage.member.permissions.has("ADMINISTRATOR") || !helpF.checkBusy(receivedMessage.client, receivedMessage.guild.id)) {
+        if (helpF.joinIn(receivedMessage)) {
             returnMsg.push("Joined in your channel to monitor.")
         }
         monitorData.currentlyMonitoring = true;

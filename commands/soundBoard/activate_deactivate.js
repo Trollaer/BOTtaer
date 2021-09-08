@@ -42,7 +42,7 @@ module.exports = {
             const attachment = new Discord.MessageAttachment('./resources/icons/bothelpicon.png', 'bothelpicon.png');
             exampleEmbed.files = [attachment];
             message.channel.send("@everyone", {
-                embed: exampleEmbed
+                embeds: [exampleEmbed]
             });
         });
     }

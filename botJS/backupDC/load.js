@@ -2,7 +2,7 @@ exports.loadRoles = loadRoles;
 exports.loadBackup = loadBackup;
 //*********loadRoles**************
 async function loadRoles(guild, backupData) {
-    if (!guild.me.hasPermission("ADMINISTRATOR")) {
+    if (!guild.me.permissions.has("ADMINISTRATOR")) {
         return console.log("Need admin permissions.")
     }
     var backupRoles = backupData;
@@ -157,13 +157,13 @@ async function loadChannel(channelData, guild, category) {
         type: null
         , parent: category
     };
-    if (channelData.type === 'text') {
+    if (channelData.type === 'GUILD_TEXT') {
         createOptions.topic = channelData.topic;
-        createOptions.nsfw = channelData.nsfw;
+        createOptions.nsfwLevel = channelData.nsfwLevel;
         createOptions.rateLimitPerUser = channelData.rateLimitPerUser;
-        createOptions.type = channelData.isNews && guild.features.includes('NEWS') ? 'news' : 'text';
+        createOptions.type = channelData.isNews && guild.features.includes('NEWS') ? 'GUILD_NEWS' : 'GUILD_TEXT';
     }
-    else if (channelData.type === 'voice') {
+    else if (channelData.type === 'GUILD_VOICE') {
         maxBitrate = [64000, 128000, 256000, 384000];
         bitrate = channelData.bitrate;
         while (bitrate > maxBitrate[guild.premiumTier]) {
@@ -171,7 +171,7 @@ async function loadChannel(channelData, guild, category) {
         }
         createOptions.bitrate = bitrate;
         createOptions.userLimit = channelData.userLimit;
-        createOptions.type = 'voice';
+        createOptions.type = 'GUILD_VOICE';
     }
     await guild.channels.create(channelData.name, createOptions).then(async function (channel) {
         var finalPermissions;
@@ -191,9 +191,9 @@ async function loadChannel(channelData, guild, category) {
                 console.log(perm.roleName)
             }
         });
-        await channel.overwritePermissions(finalPermissions);
+        await channel.permissionOverwrites.set(finalPermissions);
         /* Load messages */
-        if (channelData.type === 'text' && channelData.messages.length > 0) {
+        if (channelData.type === 'GUILD_TEXT' && channelData.messages.length > 0) {
             await channel.createWebhook('MessagesBackup', {
                 avatar: channel.client.user.displayAvatarURL()
             }).then(async function (webhook) {
@@ -223,7 +223,7 @@ async function loadChannel(channelData, guild, category) {
 }
 async function loadCategory(categoryData, guild) {
     await guild.channels.create(categoryData.name, {
-        type: 'category'
+        type: 'GUILD_CATEGORY'
     }).then(async function (category) {
         var finalPermissions;
         finalPermissions = [];
@@ -239,7 +239,7 @@ async function loadCategory(categoryData, guild) {
                 });
             }
         });
-        await category.overwritePermissions(finalPermissions);
+        await category.permissionOverwrites.set(finalPermissions);
         //children from category
         await categoryData.children.forEach(async function (channelData) {
             //console.log("***channel:" + channelData.name);

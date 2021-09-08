@@ -68,7 +68,7 @@ module.exports = {
                 embed.description = embed.description.substr(0, embed.description.indexOf("\n", 2000)) + "\n. . .";
             }
             var playingMessage = await queue.textChannel.send({
-                embed: embed
+                embeds: [embed]
             });;
             await playingMessage.react("⏭");
             await playingMessage.react("🔇");
@@ -87,7 +87,7 @@ module.exports = {
         var sendMsg;
         collector.on("collect", (reaction, user) => {
             if (!queue) return;
-            const member = message.guild.member(user);
+            const member = message.guild.members.cache.get(user.id);
             if (!queue.connection.dispatcher) {
                 return;
             }
