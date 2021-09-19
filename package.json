@@ -7,7 +7,7 @@
     "version": "4.0.3",
     "engines": {
         "node": "16.6"
-      },
+    },
     "description": "A multi functional Discord bot.",
     "keywords": [
         "discord.js",
@@ -24,7 +24,7 @@
         "start": "node bot.js"
     },
     "dependencies": {
-        "@discordjs/opus": "^0.5.0",
+        "@discordjs/opus": "^0.5.3",
         "@discordjs/rest": "0.1.0-canary.0",
         "@discordjs/voice": "^0.6.0",
         "all": "^0.0.0",
@@ -35,15 +35,18 @@
         "express": "^4.17.1",
         "express-session": "^1.17.1",
         "ffmpeg": "^0.0.4",
-        "ffmpeg-static": "^4.2.8",
+        "ffmpeg-static": "^4.4.0",
         "http": "^0.0.1-security",
+        "libsodium-wrappers": "^0.7.9",
         "net-ping": "^1.2.3",
+        "opusscript": "^0.0.8",
         "pg": "^8.5.1",
         "ping": "^0.4.1",
         "pug": "^3.0.2",
         "request": "^2.88.2",
         "simple-youtube-api": "^5.2.1",
         "tcp-ping": "^0.1.1",
+        "tweetnacl": "^1.0.3",
         "web-pingjs": "^1.0.1",
         "ytdl-core": "^4.9.1",
         "ytdl-core-discord": "^1.2.5"

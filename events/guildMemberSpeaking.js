@@ -1,5 +1,5 @@
 module.exports = (client, member, speaking) => {
-    //console.log(member.user.username.toString() + "  eventtriggered " + speaking);
+    console.log(member.user.username.toString() + "  eventtriggered " + speaking);
     const {
         TEST_SERVER
     } = require("../util/BOTtaerUtil.js");
@@ -10,9 +10,9 @@ module.exports = (client, member, speaking) => {
         return;
     }
     //console.log(receivedMessage.mentions.users)
-    var getsMonitored = monitoredGuild.monitoringUsers.get(member.user.id); //data about the one who gets monitored.
+    var getsMonitored = monitoredGuild.monitoringUsers.get(member.user.id); //data about the one who gets monitored. 
     if (getsMonitored) {
-        //console.log("MONITORed " + speaking)
+        console.log("MONITORed " + speaking)
         helpF.checkMonitoredMember(getsMonitored, member, speaking);
     }
     var monitorDataAll = monitoredGuild.monitoringAll;
@@ -21,4 +21,5 @@ module.exports = (client, member, speaking) => {
             helpF.updateTimeSpoken(monitorDataAll.users, member, speaking);
         }
     }
+    ///https://discordjs.github.io/voice/classes/voicereceiver.html
 }
